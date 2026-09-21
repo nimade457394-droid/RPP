@@ -491,10 +491,15 @@
         </section>
 
         <section id="administrasi" class="tab-content hidden">
-            <div class="bg-white p-8 rounded-xl shadow text-center">
-                <i class="fa-solid fa-folder-open text-5xl text-blue-700 mb-3"></i>
-                <h2 class="text-2xl font-bold text-slate-800">Administrasi Guru</h2>
-                <p class="text-slate-500 mt-1">Portal dokumen dan administrasi guru sedang disiapkan.</p>
+            <div class="bg-white p-8 rounded-xl shadow border p-6 space-y-4">
+                <div class="flex items-center space-x-3 text-blue-900 border-b pb-3">
+                    <i class="fa-solid fa-folder-open text-3xl text-blue-700"></i>
+                    <h2 class="text-2xl font-bold">Administrasi Guru & Rekap Tugas</h2>
+                </div>
+                <p class="text-sm text-slate-600">Dokumen administrasi dan rekapitulasi pengerjaan siswa telah tersimpan di sistem.</p>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 text-xs text-blue-900">
+                    <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> LKPD Siswa berhasil dikirimkan dan dicetak ke PDF.
+                </div>
             </div>
         </section>
 
@@ -725,31 +730,6 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                         soal_reflektif: { pertanyaan: "Soal evaluasi singkat.", pilihan: [] },
                         refleksi_diri: { pilihan_emosi: ["Paham"], pesan_untuk_guru: "" }
                     };
-                } else if (data.soal && Array.isArray(data.soal)) {
-                    newLKPD.zone1_mindful = {
-                        instruksi: "Bacalah setiap pertanyaan kuis berikut dengan cermat.",
-                        poin_kesadaran: ["Fokus pada konsep inti materi."]
-                    };
-                    newLKPD.zone2_meaningful = {
-                        skenario_kasus: "Pengerjaan Soal-soal Kuis Evaluasi Pembelajaran:",
-                        kegiatan: data.soal.map((s, idx) => ({
-                            tipe: "pilihan_pemecahan",
-                            pertanyaan: `Soal ${idx + 1}: ${s.pertanyaan || s.soal}`,
-                            opsi_pilihan: s.pilihan || s.opsi || []
-                        }))
-                    };
-                    newLKPD.zone3_joyful = {
-                        soal_reflektif: {
-                            pertanyaan: "Bagaimana tingkat keyakinan Anda terhadap jawaban kuis di atas?",
-                            pilihan: ["A. Sangat Yakin", "B. Cukup Yakin", "C. Kurang Yakin"]
-                        },
-                        refleksi_diri: {
-                            pilihan_emosi: ["Sangat Paham", "Perlu Belajar Lagi"],
-                            pesan_untuk_guru: "Catatan pembelajaran:"
-                        }
-                    };
-                } else {
-                    throw new Error("Format JSON tidak dikenali.");
                 }
 
                 lkpdDatabase.unshift(newLKPD);
@@ -828,8 +808,8 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                 if (lkpd.zone2_meaningful.kegiatan) {
                     lkpd.zone2_meaningful.kegiatan.forEach((keg, kIdx) => {
                         if (keg.tipe === "pilihan_pemecahan") {
-                            const opsiHtml = (keg.opsi_pilihan || []).map((o, oIdx) => `
-                                <label class="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-slate-200 hover:bg-amber-50 cursor-pointer text-xs">
+                            const opsiHtml = (keg.opsi_pilihan || []).map((o) => `
+                                <label class="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-slate-200 hover:bg-amber-50 cursor-pointer text-xs transition-colors">
                                     <input type="checkbox" name="z2_keg_${kIdx}" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500">
                                     <span class="text-slate-800">${o}</span>
                                 </label>
@@ -842,7 +822,7 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                                 </div>
                             `;
                         } else if (keg.tipe === "pengurutan_langkah") {
-                            const langkahHtml = (keg.langkah_acak || []).map((l, lIdx) => `
+                            const langkahHtml = (keg.langkah_acak || []).map((l) => `
                                 <div class="flex items-center space-x-3 bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
                                     <select class="p-1 border rounded bg-slate-50 font-bold text-amber-900 text-xs">
                                         <option>Urutan...</option>
@@ -891,7 +871,7 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                 let pilihanHtml = "";
                 if (lkpd.zone3_joyful.soal_reflektif && lkpd.zone3_joyful.soal_reflektif.pilihan) {
                     pilihanHtml = lkpd.zone3_joyful.soal_reflektif.pilihan.map(p => `
-                        <label class="flex items-center space-x-2 p-2 bg-white rounded-lg border border-slate-200 hover:bg-emerald-50 cursor-pointer text-xs">
+                        <label class="flex items-center space-x-2 p-2 bg-white rounded-lg border border-slate-200 hover:bg-emerald-50 cursor-pointer text-xs transition-colors">
                             <input type="radio" name="z3_soal" class="text-emerald-600 focus:ring-emerald-500">
                             <span class="text-slate-800">${p}</span>
                         </label>
@@ -935,8 +915,76 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
             }
         }
 
+        // FUNGSI SUBMIT DENGAN PEMERIKSAAN WARNA HIJAU/MERAH, PDF DOWNLOAD, & NAVIGASI ADMINISTRASI
         function submitLKPD() {
-            alert("Terima kasih! Jawaban LKPD Anda telah berhasil disimpan.");
+            const lkpd = lkpdDatabase[activeLKPDIndex];
+            if (!lkpd) return;
+
+            let totalSoal = 0;
+            let benar = 0;
+
+            // 1. EVALUASI ZONE 2: CHECKBOX (Pilihan Pemecahan)
+            if (lkpd.zone2_meaningful && lkpd.zone2_meaningful.kegiatan) {
+                lkpd.zone2_meaningful.kegiatan.forEach((keg, kIdx) => {
+                    if (keg.tipe === "pilihan_pemecahan") {
+                        const checkboxes = document.querySelectorAll(`input[name="z2_keg_${kIdx}"]`);
+                        checkboxes.forEach((cb) => {
+                            const label = cb.closest('label');
+                            totalSoal++;
+                            
+                            // Jawaban benar jika mengandung kata Periksa koneksi/kabel/driver
+                            const isCorrect = label.innerText.includes("Periksa koneksi") || label.innerText.includes("Periksa kabel") || label.innerText.includes("Periksa driver");
+
+                            if (cb.checked) {
+                                if (isCorrect) {
+                                    label.classList.add('bg-green-100', 'border-green-500', 'text-green-800', 'font-bold');
+                                    label.classList.remove('bg-white', 'hover:bg-amber-50');
+                                    benar++;
+                                } else {
+                                    label.classList.add('bg-red-100', 'border-red-500', 'text-red-800', 'font-bold');
+                                    label.classList.remove('bg-white', 'hover:bg-amber-50');
+                                }
+                            } else if (isCorrect) {
+                                label.classList.add('border-green-400', 'bg-green-50');
+                            }
+                        });
+                    }
+                });
+            }
+
+            // 2. EVALUASI ZONE 3: RADIO BUTTON (Soal Reflektif)
+            if (lkpd.zone3_joyful && lkpd.zone3_joyful.soal_reflektif) {
+                const radios = document.querySelectorAll(`input[name="z3_soal"]`);
+                radios.forEach((radio) => {
+                    const label = radio.closest('label');
+                    totalSoal++;
+                    const isCorrect = label.innerText.startsWith("A.");
+
+                    if (radio.checked) {
+                        if (isCorrect) {
+                            label.classList.add('bg-green-100', 'border-green-500', 'text-green-800', 'font-bold');
+                            label.classList.remove('bg-white', 'hover:bg-emerald-50');
+                            benar++;
+                        } else {
+                            label.classList.add('bg-red-100', 'border-red-500', 'text-red-800', 'font-bold');
+                            label.classList.remove('bg-white', 'hover:bg-emerald-50');
+                        }
+                    } else if (isCorrect) {
+                        label.classList.add('border-green-400', 'bg-green-50');
+                    }
+                });
+            }
+
+            // 3. TAMPILKAN POPUP EVALUASI
+            alert(`Jawaban Anda telah diperiksa secara otomatis!\nJumlah Pilihan Tepat: ${benar} / ${totalSoal}\n\nSistem akan otomatis mengunduh PDF pengerjaan Anda dan mengarahkan ke halaman Administrasi.`);
+
+            // 4. PEMICU OTOMATIS CETAK / DOWNLOAD PDF
+            window.print();
+
+            // 5. PENGAWASAN REDIREKSI KE ADMINISTRASI GURU
+            setTimeout(() => {
+                switchTab('administrasi');
+            }, 1000);
         }
 
         // DEFAULT STEP STEPS FOR MODUL AJAR

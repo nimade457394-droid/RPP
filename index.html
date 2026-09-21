@@ -15,9 +15,12 @@
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
-            body { background: white !important; color: black !important; }
+            body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
+            main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
             .shadow-lg, .shadow-md, .shadow-sm { box-shadow: none !important; }
-            .border-2 { border-width: 1px !important; }
+            .border-2, .border { border-width: 1px !important; border-color: #cbd5e1 !important; }
+            .bg-slate-100, .bg-slate-50, .bg-blue-50 { background-color: #ffffff !important; }
+            .rounded-xl, .rounded-lg { border-radius: 0 !important; }
         }
     </style>
 </head>
@@ -38,14 +41,14 @@
                 <!-- Main Navigation -->
                 <nav class="hidden md:flex space-x-2 text-sm font-semibold">
                     
-                    <!-- 1 & 2. Dropdown RPP (Ganti dari Modul Ajar) -->
+                    <!-- Navigasi RPP (RPP Siap Download & Mulai Menyusun RPP) -->
                     <div class="relative group">
                         <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition shadow">
                             <i class="fa-solid fa-file-lines"></i>
                             <span>RPP</span>
                             <i class="fa-solid fa-chevron-down text-xs"></i>
                         </button>
-                        <div class="absolute right-0 mt-1 w-56 bg-white rounded-lg shadow-xl py-2 hidden group-hover:block border border-slate-200 z-50">
+                        <div class="absolute right-0 mt-1 w-60 bg-white rounded-lg shadow-xl py-2 hidden group-hover:block border border-slate-200 z-50">
                             <a href="#" onclick="switchTab('rpp-view')" class="block px-4 py-2 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
                                 <i class="fa-solid fa-file-pdf mr-2 text-blue-600"></i> RPP Siap Download
                             </a>
@@ -72,7 +75,7 @@
                         </div>
                     </div>
 
-                    <!-- 5. Dropdown Materi (Classroom) -->
+                    <!-- Dropdown Materi (Classroom) -->
                     <div class="relative group">
                         <button class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
                             <i class="fa-solid fa-book-open"></i>
@@ -89,7 +92,7 @@
                         </div>
                     </div>
 
-                    <!-- 6. Dropdown Kuis (Game) -->
+                    <!-- Dropdown Kuis (Game) -->
                     <div class="relative group">
                         <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
                             <i class="fa-solid fa-gamepad"></i>
@@ -106,7 +109,7 @@
                         </div>
                     </div>
 
-                    <!-- 7. Dropdown Administrasi -->
+                    <!-- Dropdown Administrasi -->
                     <div class="relative group">
                         <button class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
                             <i class="fa-solid fa-folder-open"></i>
@@ -139,29 +142,25 @@
             <button onclick="switchTab('rpp-view')" class="block w-full text-left px-3 py-2 rounded bg-blue-800 text-white text-sm">RPP Siap Download</button>
             <button onclick="requestAuth('rpp-editor')" class="block w-full text-left px-3 py-2 rounded bg-blue-800 text-white text-sm">Mulai Menyusun RPP (Guru)</button>
 
+            <p class="text-xs font-bold uppercase text-slate-400 tracking-wider pt-2">Tugas (LKPD)</p>
+            <button onclick="switchTab('lkpd-view')" class="block w-full text-left px-3 py-2 rounded bg-amber-800 text-white text-sm">Kerjakan LKPD (Siswa)</button>
+            <button onclick="requestAuth('lkpd-editor')" class="block w-full text-left px-3 py-2 rounded bg-amber-800 text-white text-sm">Membuat LKPD (Guru)</button>
+
             <p class="text-xs font-bold uppercase text-slate-400 tracking-wider pt-2">Materi (Classroom)</p>
             <button onclick="switchTab('materi-siswa')" class="block w-full text-left px-3 py-2 rounded bg-blue-800 text-white text-sm">Siswa</button>
             <button onclick="requestAuth('materi-guru')" class="block w-full text-left px-3 py-2 rounded bg-blue-800 text-white text-sm">Guru</button>
-
-            <p class="text-xs font-bold uppercase text-slate-400 tracking-wider pt-2">Kuis (Game)</p>
-            <button onclick="switchTab('kuis-siswa')" class="block w-full text-left px-3 py-2 rounded bg-indigo-800 text-white text-sm">Siswa</button>
-            <button onclick="requestAuth('kuis-guru')" class="block w-full text-left px-3 py-2 rounded bg-indigo-800 text-white text-sm">Guru</button>
-
-            <p class="text-xs font-bold uppercase text-slate-400 tracking-wider pt-2">Administrasi</p>
-            <button onclick="switchTab('admin-siswa')" class="block w-full text-left px-3 py-2 rounded bg-blue-800 text-white text-sm">Siswa</button>
-            <button onclick="requestAuth('admin-guru')" class="block w-full text-left px-3 py-2 rounded bg-blue-800 text-white text-sm">Guru</button>
         </div>
     </header>
 
     <!-- CONTAINER UTAMA -->
     <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6">
 
-        <!-- ================= PAGE 1: RPP SIAP DOWNLOAD & HISTORI ================= -->
+        <!-- ================= MENU 1: RPP SIAP DOWNLOAD & HISTORI ================= -->
         <section id="rpp-view" class="tab-content">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 no-print">
                 <div>
-                    <h1 class="text-2xl font-black text-blue-900">Histori & RPP Siap Download</h1>
-                    <p class="text-sm text-slate-500">Daftar RPP yang telah dirancang sebelumnya untuk kemudahan pembelajaran.</p>
+                    <h1 class="text-2xl font-black text-blue-900">RPP Siap Download & Histori</h1>
+                    <p class="text-sm text-slate-500">Daftar RPP tersimpan yang telah disusun. Klik untuk melihat dan mendownload ulang.</p>
                 </div>
                 <div class="flex space-x-3">
                     <button onclick="requestAuth('rpp-editor')" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center space-x-2 transition shadow">
@@ -170,7 +169,7 @@
                     </button>
                     <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold text-sm flex items-center space-x-2 transition shadow">
                         <i class="fa-solid fa-print"></i>
-                        <span>Cetak Dokumen</span>
+                        <span>Cetak PDF</span>
                     </button>
                 </div>
             </div>
@@ -179,105 +178,104 @@
             <div class="bg-white rounded-xl shadow-md border border-slate-200 mb-8 overflow-hidden no-print">
                 <div class="bg-blue-50 p-4 border-b border-blue-100 flex items-center justify-between">
                     <h3 class="font-bold text-blue-900 text-sm flex items-center">
-                        <i class="fa-solid fa-clock-rotate-left mr-2 text-blue-600"></i> Riwayat RPP Tersimpan
+                        <i class="fa-solid fa-clock-rotate-left mr-2 text-blue-600"></i> Histori RPP Tersimpan
                     </h3>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
                             <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs uppercase font-bold">
-                                <th class="p-4">Tanggal</th>
+                                <th class="p-4">Tanggal Dibuat</th>
                                 <th class="p-4">Mata Pelajaran</th>
-                                <th class="p-4">Materi Utama / Kelas</th>
+                                <th class="p-4">Materi Utama / Topik</th>
                                 <th class="p-4">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="rpp-history-table-body" class="divide-y divide-slate-100">
-                            <!-- Data histori akan dirender via JS -->
+                            <!-- Data histori RPP akan dirender via JS -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- PRATINJAU DOKUMEN RPP TERPILIH -->
+            <!-- DOKUMEN CETAK RPP TERPILIH -->
             <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden print:shadow-none print:border-none">
-                <div class="bg-blue-600 text-white p-6 sm:p-8">
-                    <h1 class="text-2xl sm:text-3xl font-black uppercase tracking-wide">RPP / RANCANGAN PEMBELAJARAN</h1>
-                    <p class="text-blue-100 mt-2 font-medium text-sm sm:text-base">
+                <div class="bg-blue-900 text-white p-6 sm:p-8">
+                    <h1 class="text-xl sm:text-2xl font-black uppercase tracking-wide border-b border-blue-700 pb-2">MODUL AJAR / RANCANGAN PEMBELAJARAN</h1>
+                    <p class="text-blue-100 mt-2 font-medium text-xs sm:text-sm">
                         Pendekatan Deep Learning (Mindful, Meaningful, & Joyful Learning) berbasis <span id="display-model-banner" class="font-bold underline">Problem-Based Learning (PBL)</span>
                     </p>
                 </div>
 
-                <div class="bg-blue-50 px-6 py-3 border-b border-blue-100 flex flex-col sm:flex-row justify-between text-xs sm:text-sm text-blue-900 font-semibold">
-                    <div><i class="fa-solid fa-user-tie mr-1"></i> Penulis / Penyusun: <span id="display-penulis" class="font-bold">Ni Made Ayu Ulandari, S.Pd</span></div>
-                    <div><i class="fa-solid fa-school mr-1"></i> Satuan Pendidikan: <span id="display-sekolah" class="font-bold">SMP Negeri Informatika</span></div>
-                </div>
-
-                <div class="p-6 sm:p-8 space-y-8">
+                <div class="p-6 sm:p-8 space-y-6">
+                    <!-- Table Informasi Header -->
                     <div class="border border-slate-200 rounded-lg overflow-hidden">
                         <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200 text-sm">
-                            <div class="p-4 bg-slate-50 flex justify-between items-center">
+                            <div class="p-3.5 bg-slate-50 flex justify-between items-center">
                                 <span class="font-bold text-slate-700">Mata Pelajaran</span>
                                 <span id="display-mapel" class="text-slate-900 font-medium">Informatika / TIK</span>
                             </div>
-                            <div class="p-4 bg-slate-50 flex justify-between items-center">
+                            <div class="p-3.5 bg-slate-50 flex justify-between items-center">
                                 <span class="font-bold text-slate-700">Alokasi Waktu</span>
                                 <span id="display-alokasi" class="text-slate-900 font-medium">2 x 45 Menit (1 Pertemuan)</span>
                             </div>
-                            <div class="p-4 bg-white flex justify-between items-center">
+                            <div class="p-3.5 bg-white flex justify-between items-center">
                                 <span class="font-bold text-slate-700">Materi Utama</span>
                                 <span id="display-materi-utama" class="text-slate-900 font-medium text-right">Perangkat Keras (Hardware) & Perangkat Lunak (Software)</span>
                             </div>
-                            <div class="p-4 bg-white flex justify-between items-center">
+                            <div class="p-3.5 bg-white flex justify-between items-center">
                                 <span class="font-bold text-slate-700">Model Belajar</span>
                                 <span id="display-model" class="text-blue-700 font-bold">Problem-Based Learning (PBL)</span>
                             </div>
                         </div>
                     </div>
 
+                    <!-- I. CAPAIAN PEMBELAJARAN (CP) -->
                     <div>
-                        <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3 flex items-center">
-                            <i class="fa-solid fa-compass mr-2 text-blue-600"></i> I. Capaian Pembelajaran (CP)
+                        <h2 class="text-md font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-2 flex items-center">
+                            I. Capaian Pembelajaran (CP)
                         </h2>
                         <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm leading-relaxed text-slate-700" id="display-cp">
                             Pada akhir fase D, peserta didik mampu mengidentifikasi komponen, fungsi, dan cara kerja komputer, perangkat keras, serta perangkat lunak pendukung dalam kehidupan sehari-hari.
                         </div>
                     </div>
 
+                    <!-- II. TUJUAN PEMBELAJARAN -->
                     <div>
-                        <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3 flex items-center">
-                            <i class="fa-solid fa-bullseye mr-2 text-blue-600"></i> II. Tujuan Pembelajaran
+                        <h2 class="text-md font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-2 flex items-center">
+                            II. Tujuan Pembelajaran
                         </h2>
                         <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm leading-relaxed text-slate-800" id="display-tujuan">
                             Melalui model pembelajaran <strong id="tp-model-text">Problem-Based Learning (PBL)</strong> dan pengamatan media interaktif, peserta didik mampu mengidentifikasi berbagai jenis perangkat keras (hardware) dan perangkat lunak (software) beserta fungsinya secara tepat, kritis, dan kolaboratif.
                         </div>
                     </div>
 
+                    <!-- III. MEDIA, ALAT, DAN SUMBER BELAJAR -->
                     <div>
-                        <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3 flex items-center">
-                            <i class="fa-solid fa-toolbox mr-2 text-blue-600"></i> III. Media, Alat, dan Sumber Belajar
+                        <h2 class="text-md font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-2 flex items-center">
+                            III. Media, Alat, dan Sumber Belajar
                         </h2>
-                        <div class="p-4 rounded-lg border border-slate-200 bg-white space-y-2">
-                            <ul id="display-media-list" class="space-y-2 text-sm text-slate-700">
-                                <!-- List Media Dinamis dirender via JS -->
-                            </ul>
+                        <div class="p-4 rounded-lg border border-slate-200 bg-white space-y-2 text-sm text-slate-800" id="display-media-container">
+                            <!-- Item media terformat dari JS -->
                         </div>
                     </div>
 
+                    <!-- IV. LANGKAH-LANGKAH PEMBELAJARAN -->
                     <div>
-                        <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3 flex items-center">
-                            <i class="fa-solid fa-list-check mr-2 text-blue-600"></i> IV. Langkah-Langkah Pembelajaran (Deep Learning)
+                        <h2 class="text-md font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3 flex items-center">
+                            IV. Langkah-Langkah Pembelajaran (Sintaks PBL & Deep Learning)
                         </h2>
                         <div class="space-y-4 text-sm" id="display-steps-container"></div>
                     </div>
                 </div>
 
+                <!-- Footer Tanda Tangan -->
                 <div class="p-8 border-t border-slate-200 bg-slate-50 flex justify-end">
                     <div class="text-center w-64 space-y-12">
                         <div>
                             <p class="text-xs text-slate-500">Guru Mata Pelajaran,</p>
                             <div class="h-16"></div>
-                            <p class="font-bold text-slate-800 underline">( .................................................... )</p>
+                            <p id="display-penulis-ttd" class="font-bold text-slate-800 underline">Ni Made Ayu Ulandari, S.Pd</p>
                             <p class="text-xs text-slate-500 mt-1">NIP. ....................................................</p>
                         </div>
                     </div>
@@ -285,20 +283,20 @@
             </div>
         </section>
 
-        <!-- ================= PAGE 2: FORM MULAI MENYUSUN RPP ================= -->
+        <!-- ================= MENU 2: MULAI MENYUSUN RPP (FORM GURU) ================= -->
         <section id="rpp-editor" class="tab-content hidden">
             <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8 space-y-6">
                 <div class="flex justify-between items-center border-b pb-4">
                     <div>
                         <h2 class="text-2xl font-black text-blue-900">Mulai Menyusun RPP</h2>
-                        <p class="text-sm text-slate-500">Isi formulir penyusunan RPP berikut untuk menambahkan ke histori dan siap diunduh.</p>
+                        <p class="text-sm text-slate-500">Isi formulir di bawah ini. Setelah disimpan, RPP akan masuk ke riwayat dan siap diunduh sebagai PDF.</p>
                     </div>
                     <button onclick="switchTab('rpp-view')" class="text-slate-400 hover:text-slate-600 text-xl font-bold">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
-                <form id="form-rpp" onsubmit="saveRPP(event)" class="space-y-6">
+                <form id="form-rpp" onsubmit="saveAndPrintRPP(event)" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Penulis / Guru</label>
@@ -320,8 +318,8 @@
                             <input type="text" id="input-alokasi" value="2 x 45 Menit (1 Pertemuan)" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Materi Utama / Kelas</label>
-                            <input type="text" id="input-materi-utama" value="Perangkat Keras & Software" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" required>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Materi Utama / Topik</label>
+                            <input type="text" id="input-materi-utama" value="Perangkat Keras (Hardware) & Perangkat Lunak (Software)" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" required>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Model Belajar</label>
@@ -332,369 +330,148 @@
                         </div>
                     </div>
 
+                    <!-- CAPAIAN PEMBELAJARAN (SEBELUM TUJUAN) -->
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Capaian Pembelajaran (CP)</label>
+                        <label class="block text-xs font-bold text-blue-900 uppercase mb-1">I. Capaian Pembelajaran (CP)</label>
                         <textarea id="input-cp" rows="2" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">Pada akhir fase D, peserta didik mampu mengidentifikasi komponen, fungsi, dan cara kerja komputer, perangkat keras, serta perangkat lunak pendukung dalam kehidupan sehari-hari.</textarea>
                     </div>
 
+                    <!-- TUJUAN PEMBELAJARAN -->
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tujuan Pembelajaran</label>
+                        <label class="block text-xs font-bold text-blue-900 uppercase mb-1">II. Tujuan Pembelajaran</label>
                         <div class="flex items-center space-x-2 bg-slate-100 p-2 rounded-lg border mb-1 text-xs text-blue-800 font-medium">
                             <span>Awalan otomatis: <strong>"Melalui model pembelajaran <span id="prefix-model-name">Problem-Based Learning (PBL)</span>, "</strong></span>
                         </div>
                         <textarea id="input-tujuan-suffix" rows="2" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">dan pengamatan media interaktif, peserta didik mampu mengidentifikasi berbagai jenis perangkat keras (hardware) dan perangkat lunak (software) beserta fungsinya secara tepat, kritis, dan kolaboratif.</textarea>
                     </div>
 
-                    <!-- 4. MEDIA, ALAT, SUMBER BELAJAR BISA LEBIH DARI SATU (+ TAMBAHKAN ITEM) -->
-                    <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-sm text-slate-800">Media, Alat, dan Sumber Belajar</h3>
-                            <button type="button" onclick="addDynamicMediaInput()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>Tambahkan Item</span>
-                            </button>
-                        </div>
-                        <p class="text-xs text-slate-500">Anda dapat memasukkan teks penjelasan maupun link URL media belajar secara dinamis.</p>
+                    <!-- MEDIA, ALAT, DAN SUMBER BELAJAR -->
+                    <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-sm text-slate-800 border-b pb-2">III. Media, Alat, dan Sumber Belajar</h3>
+                        <p class="text-xs text-slate-500">Judul kategori sudah disesuaikan dengan template. Silakan masukkan link URL atau teks penjelasan sesuai kebutuhan:</p>
                         
-                        <div id="dynamic-media-container" class="space-y-2">
-                            <!-- Input dinamis akan dimuat di sini oleh JS -->
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Materi Utama (Google Classroom):</label>
+                                <input type="text" id="media-materi" class="w-full p-2 border rounded-lg text-xs" value="https://classroom.google.com/c/ODcyNDEzMTM2NjYw?cjc=dukqqvue" placeholder="Isikan tautan / teks...">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Game Kuis:</label>
+                                <input type="text" id="media-kuis" class="w-full p-2 border rounded-lg text-xs" value="https://www.instaplay.ai/play/ten-gems-of-circuit-forest/9b18e194" placeholder="Isikan tautan / teks...">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Media Digital & Video:</label>
+                                <input type="text" id="media-video" class="w-full p-2 border rounded-lg text-xs" value="https://tescbtspentri.github.io/media-informatika/" placeholder="Isikan tautan / teks...">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Administrasi Guru:</label>
+                                <input type="text" id="media-admin" class="w-full p-2 border rounded-lg text-xs" value="Spreadsheet Nilai & Rekap" placeholder="Isikan tautan / teks...">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Alat & Sarana:</label>
+                                <input type="text" id="media-alat" class="w-full p-2 border rounded-lg text-xs" value="Proyektor, Komputer/Laptop, Obeng & Komponen Fisik Komputer." placeholder="Isikan peralatan...">
+                            </div>
                         </div>
                     </div>
 
+                    <!-- LANGKAH-LANGKAH PEMBELAJARAN -->
                     <div class="border border-blue-200 p-4 rounded-lg bg-blue-50 space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-sm text-blue-900">Edit Langkah Pembelajaran (Sintaks & Deep Learning)</h3>
-                            <button type="button" onclick="resetStepsToDefault()" class="text-xs bg-white text-blue-600 border border-blue-300 px-2.5 py-1 rounded hover:bg-blue-100">
-                                <i class="fa-solid fa-rotate-left mr-1"></i> Reset Sintaks Default
+                            <h3 class="font-bold text-sm text-blue-900">IV. Langkah-Langkah Pembelajaran (Sintaks PBL & Deep Learning)</h3>
+                            <button type="button" onclick="resetStepsToDefault()" class="text-xs bg-white text-blue-600 border border-blue-300 px-2 py-1 rounded hover:bg-blue-100">
+                                Reset Sintaks
                             </button>
                         </div>
 
                         <div class="bg-white p-3 rounded border border-slate-200 space-y-1">
-                            <label class="block text-xs font-bold text-blue-800">1. Pendahuluan (Mindful & Joyful)</label>
-                            <textarea id="edit-step-1" rows="2" class="w-full p-2 border rounded text-xs"></textarea>
+                            <label class="block text-xs font-bold text-blue-800">A. Kegiatan Pendahuluan (10 Menit)</label>
+                            <textarea id="edit-step-1" rows="3" class="w-full p-2 border rounded text-xs"></textarea>
                         </div>
                         <div class="bg-white p-3 rounded border border-slate-200 space-y-1">
-                            <label class="block text-xs font-bold text-blue-800">2. Kegiatan Inti - Sintaks 1 (Orientasi Masalah / Pertanyaan Mendasar)</label>
-                            <textarea id="edit-step-2" rows="2" class="w-full p-2 border rounded text-xs"></textarea>
+                            <label class="block text-xs font-bold text-blue-800">B. Kegiatan Inti - Sintak 1: Orientasi Masalah</label>
+                            <textarea id="edit-step-2" rows="3" class="w-full p-2 border rounded text-xs"></textarea>
                         </div>
                         <div class="bg-white p-3 rounded border border-slate-200 space-y-1">
-                            <label class="block text-xs font-bold text-blue-800">3. Kegiatan Inti - Sintaks 2 (Pengorganisasian / Desain Proyek)</label>
+                            <label class="block text-xs font-bold text-blue-800">Sintak 2: Mengorganisasi Siswa untuk Belajar</label>
                             <textarea id="edit-step-3" rows="2" class="w-full p-2 border rounded text-xs"></textarea>
                         </div>
                         <div class="bg-white p-3 rounded border border-slate-200 space-y-1">
-                            <label class="block text-xs font-bold text-blue-800">4. Kegiatan Inti - Sintaks 3 (Penyelidikan / Monitoring Proyek)</label>
+                            <label class="block text-xs font-bold text-blue-800">Sintak 3: Membimbing Penyelidikan Individu/Kelompok</label>
                             <textarea id="edit-step-4" rows="2" class="w-full p-2 border rounded text-xs"></textarea>
                         </div>
                         <div class="bg-white p-3 rounded border border-slate-200 space-y-1">
-                            <label class="block text-xs font-bold text-blue-800">5. Kegiatan Inti - Sintaks 4 & 5 (Penyajikan Hasil & Evaluasi)</label>
+                            <label class="block text-xs font-bold text-blue-800">Sintak 4 & 5: Menyajikan Hasil Karya & Evaluasi Prosedur</label>
                             <textarea id="edit-step-5" rows="2" class="w-full p-2 border rounded text-xs"></textarea>
                         </div>
                         <div class="bg-white p-3 rounded border border-slate-200 space-y-1">
-                            <label class="block text-xs font-bold text-blue-800">6. Penutup (Refleksi & Feedback Joyful)</label>
+                            <label class="block text-xs font-bold text-blue-800">C. Kegiatan Penutup (10 Menit)</label>
                             <textarea id="edit-step-6" rows="2" class="w-full p-2 border rounded text-xs"></textarea>
                         </div>
                     </div>
 
+                    <!-- TOMBOL SIMPAN / CETAK PDF -->
                     <div class="flex justify-end space-x-3 pt-4 border-t">
                         <button type="button" onclick="switchTab('rpp-view')" class="px-5 py-2.5 border rounded-lg text-slate-600 font-semibold text-sm hover:bg-slate-100">Batal</button>
-                        <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-lg shadow-md">Simpan & Terbitkan RPP</button>
+                        <button type="submit" class="px-6 py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm rounded-lg shadow-md flex items-center space-x-2">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span>Simpan & Cetak PDF</span>
+                        </button>
                     </div>
                 </form>
             </div>
         </section>
 
-        <!-- ================= PAGE 3: KERJAKAN LKPD (SISWA INTERAKTIF) ================= -->
+        <!-- ================= HALAMAN LAINNYA (LKPD, CLASSROOM, KUIS, ADMIN) ================= -->
         <section id="lkpd-view" class="tab-content hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- SIDEBAR DAFTAR LKPD -->
-                <div class="lg:col-span-1 bg-white p-4 rounded-xl shadow-md border border-slate-200 h-fit no-print">
-                    <h3 class="font-bold text-slate-800 text-sm mb-3 flex items-center">
-                        <i class="fa-solid fa-list-check text-amber-500 mr-2"></i> Pilih LKPD Pembelajaran
-                    </h3>
-                    <div id="lkpd-list-container" class="space-y-2"></div>
-                </div>
-
-                <!-- DOKUMEN / SOAL LKPD INTERAKTIF -->
-                <div class="lg:col-span-3">
-                    <div class="mb-4 no-print flex justify-between items-center">
-                        <span class="text-xs font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full">
-                            <i class="fa-solid fa-pen-nib mr-1"></i> Mode Pengerjaan Interaktif
-                        </span>
-                        <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-print"></i> Cetak PDF
-                        </button>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden print:border-none print:shadow-none">
-                        <!-- Header LKPD -->
-                        <div class="bg-amber-500 text-white p-6 text-center">
-                            <h1 class="text-xl sm:text-2xl font-black tracking-wide uppercase">LEMBAR KERJA PESERTA DIDIK (LKPD)</h1>
-                            <p id="lkpd-active-title" class="text-amber-100 text-sm font-semibold mt-1">Perangkat Keras & Perangkat Lunak Komputer</p>
-                        </div>
-
-                        <div class="p-6 sm:p-8 space-y-6">
-                            <!-- Identitas Peserta Didik -->
-                            <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-200 space-y-3">
-                                <h2 class="font-bold text-emerald-900 border-b border-emerald-200 pb-2 flex items-center text-sm">
-                                    <i class="fa-solid fa-id-card mr-2 text-emerald-600"></i> Identitas Peserta Didik / Kelompok
-                                </h2>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                                    <div>
-                                        <label class="font-bold text-slate-700">Nama Lengkap / Kelompok:</label>
-                                        <input type="text" placeholder="Ketik nama Anda / kelompok..." class="w-full mt-1 p-2 border rounded-lg bg-white">
-                                    </div>
-                                    <div>
-                                        <label class="font-bold text-slate-700">Kelas / No. Absen:</label>
-                                        <input type="text" placeholder="Contoh: Kelas 9A / 12" class="w-full mt-1 p-2 border rounded-lg bg-white">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- WADAH UTAMA KONTEN LKPD INTERAKTIF (3 ZONE) -->
-                            <div id="lkpd-content-area" class="space-y-8"></div>
-
-                            <div class="pt-6 border-t no-print flex justify-end">
-                                <button onclick="submitLKPD()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow-md transition flex items-center space-x-2">
-                                    <i class="fa-solid fa-paper-plane"></i>
-                                    <span>Simpan & Kirim Jawaban</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-amber-600 mb-2">Kerjakan LKPD (Siswa)</h2>
+                <p class="text-xs text-slate-500">Halaman LKPD interaktif bagi peserta didik.</p>
             </div>
         </section>
 
-        <!-- ================= PAGE 4: MEMBUAT LKPD (GURU MODAL/EDITOR) ================= -->
         <section id="lkpd-editor" class="tab-content hidden">
-            <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8 space-y-6">
-                <div class="flex justify-between items-center border-b pb-4">
-                    <div>
-                        <h2 class="text-2xl font-black text-amber-600">Membuat & Mengelola LKPD</h2>
-                        <p class="text-sm text-slate-500">Buat LKPD Berbasis Masalah 3 Zone secara manual atau otomatis menggunakan Gemini AI.</p>
-                    </div>
-                    <button onclick="switchTab('lkpd-view')" class="text-slate-400 hover:text-slate-600 text-xl font-bold">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-
-                <!-- OPSI 1: AI GENERATOR -->
-                <div class="bg-amber-50 rounded-xl p-5 border border-amber-200 space-y-4">
-                    <h3 class="font-bold text-amber-900 text-base flex items-center">
-                        <i class="fa-solid fa-robot mr-2 text-amber-600"></i> Buat LKPD Otomatis via AI
-                    </h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        Salin prompt interaktif di bawah ini, tempelkan (*paste*) di Gemini AI, lalu salin balik JSON balasan AI ke kolom impor di bawah untuk langsung menerbitkan LKPD 3 Zone.
-                    </p>
-
-                    <div class="space-y-3 bg-white p-4 rounded-lg border border-amber-200">
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="text" id="ai-topic-input" placeholder="Masukkan Topik / Materi Pembelajaran..." value="Perangkat Keras & Perangkat Lunak Komputer" class="flex-grow p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500">
-                            <button onclick="copyGeminiPrompt()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 transition shadow">
-                                <i class="fa-solid fa-copy"></i>
-                                <span>Salin Prompt AI</span>
-                            </button>
-                        </div>
-                        <textarea id="ai-prompt-preview" readonly rows="6" class="w-full p-3 bg-slate-50 text-slate-600 border rounded-lg text-xs font-mono"></textarea>
-                    </div>
-
-                    <div class="space-y-2 pt-2">
-                        <label class="block text-xs font-bold text-slate-700 uppercase">Tempel (Paste) Hasil JSON dari Gemini AI Di Sini:</label>
-                        <textarea id="ai-json-input" rows="5" placeholder='{"judul": "...", "zone1_mindful": {...}, "zone2_meaningful": {...}, "zone3_joyful": {...}}' class="w-full p-3 border rounded-lg text-xs font-mono focus:ring-2 focus:ring-amber-500"></textarea>
-                        <button onclick="importJSONLKPD()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-file-import"></i>
-                            <span>Simpan & Terbitkan LKPD Baru via AI</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="relative flex py-2 items-center">
-                    <div class="flex-grow border-t border-slate-300"></div>
-                    <span class="flex-shrink mx-4 text-slate-400 text-xs font-bold uppercase">Atau Edit / Buat Manual</span>
-                    <div class="flex-grow border-t border-slate-300"></div>
-                </div>
-
-                <!-- OPSI 2: FORM MANUAL LKPD EDITOR -->
-                <form id="manual-lkpd-form" onsubmit="saveManualLKPD(event)" class="space-y-6">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Judul / Topik LKPD</label>
-                        <input type="text" id="manual-title" placeholder="Contoh: Perangkat Keras & Perangkat Lunak Komputer" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500" required>
-                    </div>
-
-                    <!-- ZONE 1 EDITOR -->
-                    <div class="border-l-4 border-blue-600 bg-blue-50/50 p-5 rounded-r-xl space-y-4 border border-slate-200">
-                        <div class="flex items-center space-x-2 text-blue-900 font-bold text-sm">
-                            <i class="fa-solid fa-brain text-blue-600"></i>
-                            <span>ZONE 1: MINDFUL LEARNING (Fokus, Kesadaran & Materi Pembelajaran)</span>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Petunjuk Kesadaran Belajar</label>
-                            <input type="text" id="manual-z1-instruksi" placeholder="Contoh: Fokuskan perhatian Anda, perhatikan instruksi berikut dengan cermat..." class="w-full p-2 border rounded-lg text-xs bg-white" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Rangkuman Materi Pembelajaran (Penguatan Zone 1)</label>
-                            <textarea id="manual-z1-materi" rows="3" placeholder="Tuliskan materi pembelajaran singkat..." class="w-full p-2.5 border rounded-lg text-xs bg-white" required></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Poin Observasi Kesadaran (Pisahkan dengan baris baru)</label>
-                            <textarea id="manual-z1-poin" rows="3" placeholder="Amati komponen komputer di meja Anda&#10;Identifikasi mana komponen input dan output" class="w-full p-2.5 border rounded-lg text-xs bg-white" required></textarea>
-                        </div>
-                    </div>
-
-                    <!-- ZONE 2 EDITOR -->
-                    <div class="border-l-4 border-amber-500 bg-amber-50/50 p-5 rounded-r-xl space-y-4 border border-slate-200">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center space-x-2 text-amber-900 font-bold text-sm">
-                                <i class="fa-solid fa-puzzle-piece text-amber-600"></i>
-                                <span>ZONE 2: MEANINGFUL LEARNING (Aktivitas Studi Kasus)</span>
-                            </div>
-                            <button type="button" onclick="addZone2Question()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>Tambah Pertanyaan Zone 2</span>
-                            </button>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Skenario Studi Kasus / Deskripsi Masalah</label>
-                            <textarea id="manual-z2-skenario" rows="3" placeholder="Tuliskan studi kasus atau skenario masalah yang relevan..." class="w-full p-2.5 border rounded-lg text-xs bg-white" required></textarea>
-                        </div>
-                        <div id="zone2-questions-container" class="space-y-4 pt-2"></div>
-                    </div>
-
-                    <!-- ZONE 3 EDITOR -->
-                    <div class="border-l-4 border-emerald-500 bg-emerald-50/50 p-5 rounded-r-xl space-y-4 border border-slate-200">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center space-x-2 text-emerald-900 font-bold text-sm">
-                                <i class="fa-solid fa-face-smile text-emerald-600"></i>
-                                <span>ZONE 3: JOYFUL LEARNING (Uji Pemahaman & Refleksi Diri)</span>
-                            </div>
-                            <button type="button" onclick="addZone3Question()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>Tambah Pertanyaan Zone 3</span>
-                            </button>
-                        </div>
-                        <div id="zone3-questions-container" class="space-y-4"></div>
-                        <div class="pt-2 border-t border-emerald-200 space-y-2">
-                            <label class="block text-xs font-bold text-slate-700">Pilihan Emosi / Perasaan Belajar (Pisahkan dengan baris baru)</label>
-                            <textarea id="manual-z3-emosi" rows="3" class="w-full p-2.5 border rounded-lg text-xs bg-white">Senang & Paham — Saya bisa mengidentifikasi materi dengan mudah.&#10;Paham Tapi Masih Bingung — Saya perlu latihan lebih lanjut.&#10;Kesulitan — Saya masih butuh bantuan guru/teman.</textarea>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end space-x-3 pt-4 border-t">
-                        <button type="button" onclick="switchTab('lkpd-view')" class="px-5 py-2.5 border rounded-lg text-slate-600 font-semibold text-sm hover:bg-slate-100">Batal</button>
-                        <button type="submit" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm rounded-lg shadow-md">Simpan LKPD Manual</button>
-                    </div>
-                </form>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-amber-600 mb-2">Membuat LKPD (Guru)</h2>
+                <p class="text-xs text-slate-500">Halaman pembuatan LKPD berbasis masalah.</p>
             </div>
         </section>
 
-        <!-- ================= PAGE 5: MATERI CLASSROOM (SISWA & GURU) ================= -->
         <section id="materi-siswa" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-xl shadow border space-y-4">
-                <div class="flex items-center space-x-3 text-blue-900 border-b pb-3">
-                    <i class="fa-solid fa-book-open text-3xl text-blue-600"></i>
-                    <div>
-                        <h2 class="text-xl font-bold">Materi (Classroom) - Siswa</h2>
-                        <p class="text-xs text-slate-500">Pilih kelas Anda untuk langsung menuju ke tautan Google Classroom resmi:</p>
-                    </div>
-                </div>
-                <div id="materi-list-siswa" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2"></div>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-blue-900 mb-2">Materi Pembelajaran (Classroom)</h2>
+                <p class="text-xs text-slate-500">Silakan pilih kelas Anda untuk masuk ke Google Classroom.</p>
             </div>
         </section>
 
         <section id="materi-guru" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-xl shadow border space-y-4">
-                <div class="flex items-center space-x-3 text-blue-900 border-b pb-3">
-                    <i class="fa-solid fa-chalkboard-user text-3xl text-blue-600"></i>
-                    <div>
-                        <h2 class="text-xl font-bold">Kelola Classroom (Guru)</h2>
-                        <p class="text-xs text-slate-500">Isikan kelas dan link Classroom agar otomatis terhubung ke tampilan siswa.</p>
-                    </div>
-                </div>
-                <form onsubmit="addLinkData(event, 'materi')" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kelas & Topik Materi</label>
-                        <input type="text" id="materi-kelas-input" placeholder="Contoh: Kelas 9A - Pemrograman Dasar" class="w-full p-2.5 border rounded-lg text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Link Classroom / URL Pembelajaran</label>
-                        <input type="url" id="materi-link-input" placeholder="https://classroom.google.com/..." class="w-full p-2.5 border rounded-lg text-sm" required>
-                    </div>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-lg text-sm shadow">Tambah Link Classroom</button>
-                </form>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-blue-900 mb-2">Kelola Kelas Materi</h2>
+                <p class="text-xs text-slate-500">Tambahkan tautan materi pembelajaran.</p>
             </div>
         </section>
 
-        <!-- ================= PAGE 6: KUIS GAME (SISWA & GURU) ================= -->
         <section id="kuis-siswa" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-xl shadow border space-y-4">
-                <div class="flex items-center space-x-3 text-indigo-900 border-b pb-3">
-                    <i class="fa-solid fa-gamepad text-3xl text-indigo-600"></i>
-                    <div>
-                        <h2 class="text-xl font-bold">Kuis & Game Pembelajaran - Siswa</h2>
-                        <p class="text-xs text-slate-500">Klik tautan di bawah ini sesuai kelas Anda untuk memulai game/kuis interaktif:</p>
-                    </div>
-                </div>
-                <div id="kuis-list-siswa" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2"></div>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-indigo-900 mb-2">Kuis & Game Interaktif</h2>
+                <p class="text-xs text-slate-500">Pilih game untuk memulai kuis.</p>
             </div>
         </section>
 
         <section id="kuis-guru" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-xl shadow border space-y-4">
-                <div class="flex items-center space-x-3 text-indigo-900 border-b pb-3">
-                    <i class="fa-solid fa-plus-circle text-3xl text-indigo-600"></i>
-                    <div>
-                        <h2 class="text-xl font-bold">Kelola Kuis & Game (Guru)</h2>
-                        <p class="text-xs text-slate-500">Atur tautan kuis/game (Quizizz, Kahoot, Worldwall) untuk diarahkan kepada siswa.</p>
-                    </div>
-                </div>
-                <form onsubmit="addLinkData(event, 'kuis')" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kelas / Judul Game Kuis</label>
-                        <input type="text" id="kuis-kelas-input" placeholder="Contoh: Game Tantangan Hardware 9B" class="w-full p-2.5 border rounded-lg text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Link Kuis / Game (URL)</label>
-                        <input type="url" id="kuis-link-input" placeholder="https://quizizz.com/join?..." class="w-full p-2.5 border rounded-lg text-sm" required>
-                    </div>
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2 rounded-lg text-sm shadow">Terbitkan Link Kuis</button>
-                </form>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-indigo-900 mb-2">Kelola Kuis Pembelajaran</h2>
             </div>
         </section>
 
-        <!-- ================= PAGE 7: ADMINISTRASI (SISWA & GURU) ================= -->
         <section id="admin-siswa" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-xl shadow border space-y-4">
-                <div class="flex items-center space-x-3 text-blue-900 border-b pb-3">
-                    <i class="fa-solid fa-folder text-3xl text-blue-600"></i>
-                    <div>
-                        <h2 class="text-xl font-bold">Administrasi - Siswa</h2>
-                        <p class="text-xs text-slate-500">Akses dokumen administrasi dan berkas pendukung pembelajaran:</p>
-                    </div>
-                </div>
-                <div id="admin-list-siswa" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2"></div>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-blue-900 mb-2">Dokumen Administrasi</h2>
             </div>
         </section>
 
         <section id="admin-guru" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-xl shadow border space-y-4">
-                <div class="flex items-center space-x-3 text-blue-900 border-b pb-3">
-                    <i class="fa-solid fa-folder-plus text-3xl text-blue-600"></i>
-                    <div>
-                        <h2 class="text-xl font-bold">Kelola Administrasi (Guru)</h2>
-                        <p class="text-xs text-slate-500">Unggah/tautkan berkas administrasi, absensi, atau modul pendukung untuk siswa.</p>
-                    </div>
-                </div>
-                <form onsubmit="addLinkData(event, 'admin')" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Dokumen / Kelas</label>
-                        <input type="text" id="admin-kelas-input" placeholder="Contoh: Rekap Absensi & Rubrik Penilaian Kelas 9A" class="w-full p-2.5 border rounded-lg text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Link Dokumen Administrasi (URL Google Drive / Berkas)</label>
-                        <input type="url" id="admin-link-input" placeholder="https://drive.google.com/..." class="w-full p-2.5 border rounded-lg text-sm" required>
-                    </div>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-lg text-sm shadow">Tambah Administrasi</button>
-                </form>
+            <div class="bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-xl font-bold text-blue-900 mb-2">Kelola Administrasi Guru</h2>
             </div>
         </section>
 
@@ -702,147 +479,53 @@
 
     <footer class="bg-slate-800 text-slate-400 text-xs py-6 mt-12 no-print border-t border-slate-700">
         <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p class="font-semibold text-slate-300">Informatika Lab &copy; 2026 - Perancang RPP & Pembelajaran Digital</p>
-            <p>Dikembangkan untuk Kurikulum Merdeka (Fase D/E/F)</p>
+            <p class="font-semibold text-slate-300">Informatika Lab &copy; 2026 - Platform Perancang RPP & Pembelajaran Digital</p>
         </div>
     </footer>
 
     <!-- JAVASCRIPT SYSTEM -->
     <script>
-        // 8. PASSWORD KEAMANAN UNTUK SEMUA MENU GURU
         const TEACHER_PASSWORD = "Ayuulan1234#";
 
-        // DATABASE STATE LOCAL
+        // DATABASE STATE LOCAL UNTUK RPP
         let rppDatabase = [
             {
                 id: 1,
-                tanggal: "2026-03-01",
+                tanggal: "2026-09-21",
                 penulis: "Ni Made Ayu Ulandari, S.Pd",
                 sekolah: "SMP Negeri Informatika",
                 mapel: "Informatika / TIK",
                 alokasi: "2 x 45 Menit (1 Pertemuan)",
-                materiUtama: "Perangkat Keras (Hardware) & Software",
+                materiUtama: "Perangkat Keras (Hardware) & Perangkat Lunak (Software)",
                 model: "Problem-Based Learning (PBL)",
                 cp: "Pada akhir fase D, peserta didik mampu mengidentifikasi komponen, fungsi, dan cara kerja komputer, perangkat keras, serta perangkat lunak pendukung dalam kehidupan sehari-hari.",
                 tujuanSuffix: "dan pengamatan media interaktif, peserta didik mampu mengidentifikasi berbagai jenis perangkat keras (hardware) dan perangkat lunak (software) beserta fungsinya secara tepat, kritis, dan kolaboratif.",
-                mediaList: [
-                    "Buku Teks Informatika Kelas 9 & PPT Interaktif",
-                    "https://www.youtube.com/results?search_query=perangkat+keras+komputer",
-                    "Quizizz / Kahoot Interaktif",
-                    "Laptop/Komputer, Proyektor LCD, Jaringan Wi-Fi"
-                ],
+                mediaObj: {
+                    materi: "https://classroom.google.com/c/ODcyNDEzMTM2NjYw?cjc=dukqqvue",
+                    kuis: "https://www.instaplay.ai/play/ten-gems-of-circuit-forest/9b18e194",
+                    video: "https://tescbtspentri.github.io/media-informatika/",
+                    admin: "Spreadsheet Nilai & Rekap",
+                    alat: "Proyektor, Komputer/Laptop, Obeng & Komponen Fisik Komputer."
+                },
                 steps: {
-                    step1: "1. Guru membuka pembelajaran dengan salam dan doa bersama.\n2. Guru mengecek kesiapan dan memberikan pertanyaan pemantik (Mindful).\n3. Guru menyampaikan tujuan pembelajaran hari ini.",
-                    step2: "1. Siswa mengamati tayangan slide / media interaktif tentang permasalahan materi.\n2. Guru memberikan gambaran kasus dunia nyata untuk memicu diskusi.",
-                    step3: "1. Siswa dibagi ke dalam beberapa kelompok kecil.\n2. Masing-masing kelompok menerima LKPD berbasis masalah.",
-                    step4: "1. Siswa berdiskusi bersama kelompok mengidentifikasi dan mengurutkan alur pemecahan masalah.\n2. Guru membimbing kelompok yang mengalami kesulitan.",
-                    step5: "1. Masing-masing kelompok mempresentasikan hasil diskusi LKPD di depan kelas.\n2. Kelompok lain memberikan tanggapan atau pertanyaan.",
-                    step6: "1. Guru memberikan apresiasi dan umpan balik positif (Joyful).\n2. Siswa mengisi lembar refleksi diri.\n3. Pembelajaran ditutup dengan doa dan salam."
+                    step1: "Mindful Learning: Guru menyapa peserta didik, memeriksa kesiapan belajar, berdoa bersama, dan melakukan ice breaking singkat.\nApersepsi & Motivasi: Guru menyampaikan tujuan pembelajaran dan mengaitkan pentingnya pemahaman komponen komputer.",
+                    step2: "Guru menampilkan gambar pemantik permasalahan kelompok siswa yang kesulitan membedakan hardware dan software, lalu mengajukan pertanyaan kritis.",
+                    step3: "1. Guru membagi siswa ke dalam kelompok heterogen (4-5 orang).\n2. Guru membagikan LKPD dan mengarahkan siswa mengakses media digital.",
+                    step4: "Siswa aktif berdiskusi menganalisis masalah pada LKPD dan mengamati komponen fisik komputer serta media interaktif.",
+                    step5: "1. Perwakilan kelompok mempresentasikan hasil diskusi di depan kelas.\n2. Kelompok lain memberikan tanggapan.\n3. Guru memberikan evaluasi dan apresiasi (Joyful Learning).",
+                    step6: "1. Refleksi Pembelajaran: Siswa mengisi lembar refleksi pada LKPD.\n2. Integrasi Classroom: Siswa mengonfirmasi tugas.\n3. Penutup dengan doa dan salam."
                 }
             }
         ];
 
         let selectedRPPIndex = 0;
 
-        let linkDatabase = {
-            materi: [
-                { kelas: "Kelas 9A - Perangkat Keras", link: "https://classroom.google.com" },
-                { kelas: "Kelas 9B - Jaringan Komputer", link: "https://classroom.google.com" }
-            ],
-            kuis: [
-                { kelas: "Kuis Hardware 9A (Quizizz)", link: "https://quizizz.com" },
-                { kelas: "Game Edukasi Software 9B", link: "https://wordwall.net" }
-            ],
-            admin: [
-                { kelas: "Rekap Absensi & Penilaian Kelas 9", link: "https://drive.google.com" }
-            ]
-        };
-
-        let lkpdDatabase = [
-            {
-                id: 1,
-                judul: "Perangkat Keras & Perangkat Lunak Komputer",
-                zone1_mindful: {
-                    instruksi: "Arahkan perhatian Anda, fokuskan pikiran, dan amati komponen komputer di sekitar Anda sebelum memulai aktivitas berikut.",
-                    materi_singkat: "Sistem Komputer terdiri dari tiga komponen utama: Hardware (perangkat keras seperti keyboard, monitor, CPU), Software (sistem operasi & aplikasi), dan Brainware (pengguna). Hardware tidak dapat berfungsi tanpa software, dan sebaliknya.",
-                    poin_kesadaran: [
-                        "Perhatikan bagaimana bentuk fisik komputer (mouse, keyboard) merespons sentuhan jemari Anda.",
-                        "Amati bagaimana perangkat lunak (aplikasi) mengolah masukan tersebut menjadi tampilan visual di layar monitor.",
-                        "Diskusikan secara singkat dengan teman di sebelah Anda: Apa yang terjadi jika salah satu komponen pendukung tidak terhubung?"
-                    ]
-                },
-                zone2_meaningful: {
-                    skenario_kasus: "Di sebuah lab komputer sekolah, beberapa unit komputer tidak bisa digunakan untuk mengetik tugas dan suaranya tidak keluar saat memutar video pembelajaran. Sebagai tim teknisi muda, analisis dan selesaikan masalah tersebut!",
-                    kegiatan: [
-                        {
-                            tipe: "pilihan_pemecahan",
-                            pertanyaan: "Pilihlah 3 komponen yang paling relevan untuk diperiksa dalam kasus di atas!",
-                            opsi_pilihan: [
-                                "Periksa koneksi port USB Keyboard",
-                                "Periksa kabel jack audio / Speaker",
-                                "Periksa driver perangkat keras suara & keyboard di OS",
-                                "Ganti layar monitor dengan yang baru",
-                                "Tambahkan kapasitas RAM komputer",
-                                "Bersihkan kipas pendingin processor (Heatsink)",
-                                "Install ulang aplikasi kalkulator"
-                            ],
-                            kunci_jawaban_opsi: [0, 1, 2]
-                        },
-                        {
-                            tipe: "pengurutan_langkah",
-                            pertanyaan: "Urutkan langkah perbaikan prosedur berikut agar alur solusinya runtut!",
-                            langkah_acak: [
-                                "Nyalakan komputer dan uji coba fungsi perangkat.",
-                                "Identifikasi gejala kerusakan (tidak ada suara & pengetikan gagal).",
-                                "Cek secara fisik sambungan kabel keyboard dan speaker.",
-                                "Buka Device Manager di sistem operasi untuk mengecek status driver."
-                            ]
-                        },
-                        {
-                            tipe: "isian_manual",
-                            pertanyaan: "Tuliskan analisis & alasan kalian mengapa memilih langkah-langkah di atas serta berikan kesimpulannya!",
-                            format_jawaban: "ruang_teks_kosong"
-                        }
-                    ]
-                },
-                zone3_joyful: {
-                    soal_reflektif_list: [
-                        {
-                            pertanyaan: "Jika sebuah komputer bisa menyala tetapi tidak dapat menampilkan gambar sama sekali ke layar monitor, manakah komponen yang pertama kali perlu dicek?",
-                            pilihan: [
-                                "A. Kabel VGA/HDMI dan RAM Komputer",
-                                "B. Printer dan Scanner",
-                                "C. Aplikasi Microsoft Word",
-                                "D. Tetikus (Mouse) Wireless"
-                            ],
-                            jawaban_benar: 0,
-                            penjelasan: "Gambar tidak muncul di layar biasanya disebabkan masalah fisik pada transmisi video (Kabel VGA/HDMI) atau kegagalan POST memori utama (RAM) pada motherboard.",
-                            butuh_alasan_manual: true
-                        }
-                    ],
-                    refleksi_diri: {
-                        pilihan_emosi: [
-                            "Senang & Paham — Saya bisa mengidentifikasi masalah perangkat keras & lunak dengan mudah.",
-                            "Paham Tapi Masih Bingung — Saya perlu latihan troubleshooting lebih lanjut.",
-                            "Kesulitan — Saya masih butuh bantuan guru/teman dalam menganalisis masalah."
-                        ],
-                        pesan_untuk_guru: "Hal paling menarik yang saya pelajari hari ini adalah..."
-                    }
-                }
-            }
-        ];
-
-        let activeLKPDIndex = 0;
-
-        // 8. AUTENTIKASI PASSWORD UNTUK SEMUA MENU GURU
         function requestAuth(targetTab) {
             const pass = prompt("Masukkan Password Khusus Guru:");
             if (pass === null) return;
 
             if (pass.trim() === TEACHER_PASSWORD) {
-                if(targetTab === 'lkpd-editor') {
-                    initLKPDForm();
-                } else if(targetTab === 'rpp-editor') {
+                if(targetTab === 'rpp-editor') {
                     initRPPForm();
                 }
                 switchTab(targetTab);
@@ -851,46 +534,41 @@
             }
         }
 
-        // TAB SWITCHING SYSTEM
         function switchTab(tabId) {
             const tabs = document.querySelectorAll('.tab-content');
             tabs.forEach(tab => tab.classList.add('hidden'));
 
             const activeTab = document.getElementById(tabId);
-            if (activeTab) {
-                activeTab.classList.remove('hidden');
-            }
+            if (activeTab) activeTab.classList.remove('hidden');
 
             if (tabId === 'rpp-view') {
                 renderRPPHistoryTable();
                 renderSelectedRPP();
-            } else if (tabId === 'lkpd-view') {
-                renderLKPDList();
-                renderActiveLKPD();
-            } else if (['materi-siswa', 'kuis-siswa', 'admin-siswa'].includes(tabId)) {
-                renderLinkCards();
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
-        // 4. PENANGANAN MEDIA DENGAN TANDA TAMBAHKAN DYNAMIC
-        function addDynamicMediaInput(valueText = "") {
-            const container = document.getElementById('dynamic-media-container');
-            const div = document.createElement('div');
-            div.className = "flex items-center space-x-2 dynamic-media-item";
-            div.innerHTML = `
-                <input type="text" class="media-input-value flex-grow p-2 border rounded-lg text-xs" value="${valueText}" placeholder="Isikan link (URL) atau nama media/alat/sumber..." required>
-                <button type="button" onclick="this.parentElement.remove()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-3 py-2 rounded-lg text-xs transition">
-                    <i class="fa-solid fa-trash"></i> Hapus
-                </button>
-            `;
-            container.appendChild(div);
+        const defaultSteps = {
+            step1: "Mindful Learning: Guru menyapa peserta didik, memeriksa kesiapan belajar, berdoa bersama, dan melakukan ice breaking singkat.\nApersepsi & Motivasi: Guru menyampaikan tujuan pembelajaran dan mengaitkan pentingnya pemahaman komponen komputer.",
+            step2: "Guru menampilkan Gambar Pemantik menggunakan proyektor dan memandu diskusi interaktif terkait perbedaan fungsi hardware dan software.",
+            step3: "1. Guru membagi siswa ke dalam kelompok heterogen (4-5 orang).\n2. Guru membagikan cetakan LKPD atau mengarahkan siswa membuka menu LKPD.",
+            step4: "Aktivitas Siswa: Siswa berdiskusi mengamati media interaktif dan menganalisis komponen komputer.\nAktivitas Guru: Guru membimbing dan memberikan scaffolding.",
+            step5: "1. Perwakilan kelompok mempresentasikan hasil LKPD.\n2. Guru memberikan penguatan konsep dan apresiasi (Joyful Learning).",
+            step6: "1. Refleksi Pembelajaran: Siswa mengisi refleksi.\n2. Konfirmasi tugas di Google Classroom.\n3. Doa dan salam penutup."
+        };
+
+        function resetStepsToDefault() {
+            document.getElementById('edit-step-1').value = defaultSteps.step1;
+            document.getElementById('edit-step-2').value = defaultSteps.step2;
+            document.getElementById('edit-step-3').value = defaultSteps.step3;
+            document.getElementById('edit-step-4').value = defaultSteps.step4;
+            document.getElementById('edit-step-5').value = defaultSteps.step5;
+            document.getElementById('edit-step-6').value = defaultSteps.step6;
         }
 
         function initRPPForm() {
@@ -906,12 +584,12 @@
             document.getElementById('input-cp').value = current.cp;
             document.getElementById('input-tujuan-suffix').value = current.tujuanSuffix;
 
-            const mediaContainer = document.getElementById('dynamic-media-container');
-            mediaContainer.innerHTML = "";
-            if (current.mediaList && current.mediaList.length > 0) {
-                current.mediaList.forEach(m => addDynamicMediaInput(m));
-            } else {
-                addDynamicMediaInput();
+            if (current.mediaObj) {
+                document.getElementById('media-materi').value = current.mediaObj.materi || "";
+                document.getElementById('media-kuis').value = current.mediaObj.kuis || "";
+                document.getElementById('media-video').value = current.mediaObj.video || "";
+                document.getElementById('media-admin').value = current.mediaObj.admin || "";
+                document.getElementById('media-alat').value = current.mediaObj.alat || "";
             }
 
             if (current.steps) {
@@ -924,16 +602,9 @@
             }
         }
 
-        // SIMPAN DRAFT/RPP BARU
-        function saveRPP(e) {
+        // FUNGSI SIMPAN DAN CETAK PDF
+        function saveAndPrintRPP(e) {
             e.preventDefault();
-
-            // Kumpulkan Media dari Input Dinamis
-            const mediaInputs = document.querySelectorAll('.media-input-value');
-            const mediaList = [];
-            mediaInputs.forEach(inp => {
-                if(inp.value.trim() !== "") mediaList.push(inp.value.trim());
-            });
 
             const today = new Date().toISOString().split('T')[0];
             const newRPP = {
@@ -947,7 +618,13 @@
                 model: document.getElementById('input-model').value,
                 cp: document.getElementById('input-cp').value,
                 tujuanSuffix: document.getElementById('input-tujuan-suffix').value,
-                mediaList: mediaList,
+                mediaObj: {
+                    materi: document.getElementById('media-materi').value,
+                    kuis: document.getElementById('media-kuis').value,
+                    video: document.getElementById('media-video').value,
+                    admin: document.getElementById('media-admin').value,
+                    alat: document.getElementById('media-alat').value
+                },
                 steps: {
                     step1: document.getElementById('edit-step-1').value,
                     step2: document.getElementById('edit-step-2').value,
@@ -960,11 +637,14 @@
 
             rppDatabase.unshift(newRPP);
             selectedRPPIndex = 0;
-            alert("RPP Berhasil Disimpan & Diterbitkan!");
+
+            // Pindah ke tampilan RPP dan jalankan fungsi cetak
             switchTab('rpp-view');
+            setTimeout(() => {
+                window.print();
+            }, 300);
         }
 
-        // 3. RENDER HISTORI RPP DISIAP DOWNLOAD
         function renderRPPHistoryTable() {
             const tbody = document.getElementById('rpp-history-table-body');
             tbody.innerHTML = "";
@@ -977,8 +657,8 @@
                     <td class="p-4 text-slate-800 font-bold">${item.mapel}</td>
                     <td class="p-4 text-slate-700">${item.materiUtama}</td>
                     <td class="p-4">
-                        <button onclick="selectRPP(${index})" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded text-xs transition shadow">
-                            <i class="fa-solid fa-eye mr-1"></i> Tampilkan & Download
+                        <button onclick="selectRPP(${index})" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded text-xs transition shadow flex items-center gap-1">
+                            <i class="fa-solid fa-eye"></i> Tampilkan & Download
                         </button>
                     </td>
                 `;
@@ -992,12 +672,19 @@
             renderSelectedRPP();
         }
 
+        function formatMediaItem(title, val) {
+            if (!val) return "";
+            let contentHtml = val;
+            if (val.startsWith("http://") || val.startsWith("https://")) {
+                contentHtml = `<a href="${val}" target="_blank" class="text-blue-600 underline font-semibold break-all">${val}</a>`;
+            }
+            return `<div class="py-1"><strong>${title}:</strong> ${contentHtml}</div>`;
+        }
+
         function renderSelectedRPP() {
             const current = rppDatabase[selectedRPPIndex] || rppDatabase[0];
             if (!current) return;
 
-            document.getElementById('display-penulis').innerText = current.penulis;
-            document.getElementById('display-sekolah').innerText = current.sekolah;
             document.getElementById('display-mapel').innerText = current.mapel;
             document.getElementById('display-alokasi').innerText = current.alokasi;
             document.getElementById('display-materi-utama').innerText = current.materiUtama;
@@ -1006,701 +693,30 @@
             document.getElementById('tp-model-text').innerText = current.model;
             document.getElementById('display-cp').innerText = current.cp;
             document.getElementById('display-tujuan').innerHTML = `Melalui model pembelajaran <strong>${current.model}</strong>, ${current.tujuanSuffix}`;
+            document.getElementById('display-penulis-ttd').innerText = current.penulis;
 
-            // Render Media List Dinamis
-            const mediaListElem = document.getElementById('display-media-list');
-            mediaListElem.innerHTML = "";
-            if(current.mediaList && current.mediaList.length > 0) {
-                current.mediaList.forEach(m => {
-                    const li = document.createElement('li');
-                    li.className = "flex items-center space-x-2";
-                    if (m.startsWith('http://') || m.startsWith('https://')) {
-                        li.innerHTML = `<i class="fa-solid fa-link text-blue-600"></i> <a href="${m}" target="_blank" class="text-blue-600 hover:underline font-semibold line-clamp-1">${m}</a>`;
-                    } else {
-                        li.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> <span>${m}</span>`;
-                    }
-                    mediaListElem.appendChild(li);
-                });
-            } else {
-                mediaListElem.innerHTML = "<li>Belum ada media yang ditambahkan.</li>";
+            // Render Media
+            const mediaContainer = document.getElementById('display-media-container');
+            if (current.mediaObj) {
+                mediaContainer.innerHTML = `
+                    ${formatMediaItem('Materi Utama (Google Classroom)', current.mediaObj.materi)}
+                    ${formatMediaItem('Game Kuis', current.mediaObj.kuis)}
+                    ${formatMediaItem('Media Digital & Video', current.mediaObj.video)}
+                    ${formatMediaItem('Administrasi Guru', current.mediaObj.admin)}
+                    ${formatMediaItem('Alat & Sarana', current.mediaObj.alat)}
+                `;
             }
 
             // Render Steps
             const stepsContainer = document.getElementById('display-steps-container');
             stepsContainer.innerHTML = `
-                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">1. Pendahuluan (Mindful)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step1 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">2. Kegiatan Inti - Sintaks 1</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step2 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">3. Kegiatan Inti - Sintaks 2</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step3 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">4. Kegiatan Inti - Sintaks 3</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step4 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">5. Kegiatan Inti - Sintaks 4 & 5</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step5 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">6. Penutup (Joyful)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step6 : ''}</p></div>
+                <div class="p-3.5 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">A. Kegiatan Pendahuluan (10 Menit)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step1 : ''}</p></div>
+                <div class="p-3.5 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">B. Kegiatan Inti - Sintak 1: Orientasi Peserta Didik pada Masalah</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step2 : ''}</p></div>
+                <div class="p-3.5 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">Sintak 2: Mengorganisasi Siswa untuk Belajar</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step3 : ''}</p></div>
+                <div class="p-3.5 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">Sintak 3: Membimbing Penyelidikan Individu/Kelompok</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step4 : ''}</p></div>
+                <div class="p-3.5 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">Sintak 4 & 5: Menyajikan Hasil Karya & Evaluasi Proses</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step5 : ''}</p></div>
+                <div class="p-3.5 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">C. Kegiatan Penutup (10 Menit)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step6 : ''}</p></div>
             `;
-        }
-
-        // 5, 6, 7. OLAH LINK APLIKASI (MATERI, KUIS, ADMINISTRASI) UNTUK SISWA & GURU
-        function addLinkData(e, type) {
-            e.preventDefault();
-            const kelasInput = document.getElementById(`${type}-kelas-input`);
-            const linkInput = document.getElementById(`${type}-link-input`);
-
-            linkDatabase[type].push({
-                kelas: kelasInput.value,
-                link: linkInput.value
-            });
-
-            alert("Link Berhasil Ditambahkan!");
-            kelasInput.value = "";
-            linkInput.value = "";
-            switchTab(`${type}-siswa`);
-        }
-
-        function renderLinkCards() {
-            ['materi', 'kuis', 'admin'].forEach(type => {
-                const container = document.getElementById(`${type}-list-siswa`);
-                if (!container) return;
-
-                container.innerHTML = "";
-                if (linkDatabase[type].length === 0) {
-                    container.innerHTML = "<p class='text-xs text-slate-500 italic col-span-3'>Belum ada tautan ditambahkan oleh Guru.</p>";
-                } else {
-                    linkDatabase[type].forEach(item => {
-                        const card = document.createElement('div');
-                        card.className = "bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 shadow-sm hover:shadow transition";
-                        card.innerHTML = `
-                            <h4 class="font-bold text-sm text-slate-800">${item.kelas}</h4>
-                            <a href="${item.link}" target="_blank" class="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                <span>Buka Tautan</span>
-                            </a>
-                        `;
-                        container.appendChild(card);
-                    });
-                }
-            });
-        }
-
-        // DYNAMIC QUESTION HANDLERS FOR ZONE 2 & ZONE 3 (LKPD)
-        function addZone2Question(qData = null) {
-            const container = document.getElementById('zone2-questions-container');
-            const qId = Date.now() + Math.random();
-            const div = document.createElement('div');
-            div.className = "p-4 bg-white rounded-lg border border-amber-300 space-y-3 relative";
-            div.dataset.qid = qId;
-
-            const qType = qData ? qData.tipe : "isian_manual";
-            const qTitle = qData ? qData.pertanyaan : "";
-            const qOpsi = qData && qData.opsi_pilihan ? qData.opsi_pilihan.join("\n") : "";
-            const qLangkah = qData && qData.langkah_acak ? qData.langkah_acak.join("\n") : "";
-
-            div.innerHTML = `
-                <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-red-500 hover:text-red-700 font-bold text-xs">
-                    <i class="fa-solid fa-trash"></i> Hapus
-                </button>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Tipe Pertanyaan Zone 2</label>
-                        <select onchange="toggleZone2Type(this)" class="z2-type-select w-full p-2 border rounded text-xs bg-slate-50 font-semibold">
-                            <option value="isian_manual" ${qType === 'isian_manual' ? 'selected' : ''}>Isian / Analisis Manual</option>
-                            <option value="pilihan_pemecahan" ${qType === 'pilihan_pemecahan' ? 'selected' : ''}>Pilihan Banyak (Checkbox)</option>
-                            <option value="pengurutan_langkah" ${qType === 'pengurutan_langkah' ? 'selected' : ''}>Pengurutan Prosedur / Langkah</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Teks Pertanyaan / Instruksi Sub-kegiatan</label>
-                        <input type="text" class="z2-pertanyaan-input w-full p-2 border rounded text-xs" value="${qTitle}" placeholder="Contoh: Analisislah masalah di atas..." required>
-                    </div>
-                </div>
-
-                <div class="z2-options-box ${qType === 'pilihan_pemecahan' ? '' : 'hidden'}">
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Pilihan Opsi Centang (Satu opsi per baris)</label>
-                    <textarea class="z2-opsi-input w-full p-2 border rounded text-xs" rows="3" placeholder="Opsi A&#10;Opsi B&#10;Opsi C">${qOpsi}</textarea>
-                </div>
-
-                <div class="z2-langkah-box ${qType === 'pengurutan_langkah' ? '' : 'hidden'}">
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Langkah Prosedur Acak (Satu langkah per baris)</label>
-                    <textarea class="z2-langkah-input w-full p-2 border rounded text-xs" rows="3" placeholder="Langkah 1&#10;Langkah 2&#10;Langkah 3">${qLangkah}</textarea>
-                </div>
-            `;
-            container.appendChild(div);
-        }
-
-        function toggleZone2Type(selectElem) {
-            const parent = selectElem.closest('.relative');
-            const optBox = parent.querySelector('.z2-options-box');
-            const langBox = parent.querySelector('.z2-langkah-box');
-
-            optBox.classList.add('hidden');
-            langBox.classList.add('hidden');
-
-            if (selectElem.value === 'pilihan_pemecahan') optBox.classList.remove('hidden');
-            if (selectElem.value === 'pengurutan_langkah') langBox.classList.remove('hidden');
-        }
-
-        function addZone3Question(qData = null) {
-            const container = document.getElementById('zone3-questions-container');
-            const div = document.createElement('div');
-            div.className = "p-4 bg-white rounded-lg border border-emerald-300 space-y-3 relative";
-
-            const qTitle = qData ? qData.pertanyaan : "";
-            const qPilihan = qData && qData.pilihan ? qData.pilihan.join("\n") : "";
-            const qJawaban = qData && qData.jawaban_benar !== undefined ? qData.jawaban_benar : 0;
-            const qPenjelasan = qData && qData.penjelasan ? qData.penjelasan : "";
-            const qButuhAlasan = qData ? qData.butuh_alasan_manual : true;
-
-            div.innerHTML = `
-                <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-red-500 hover:text-red-700 font-bold text-xs">
-                    <i class="fa-solid fa-trash"></i> Hapus
-                </button>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Pertanyaan Uji Pemahaman / Kuis Reflektif</label>
-                    <input type="text" class="z3-pertanyaan-input w-full p-2 border rounded text-xs" value="${qTitle}" placeholder="Tuliskan pertanyaan tantangan..." required>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Pilihan Ganda A, B, C, D (Satu per baris)</label>
-                        <textarea class="z3-pilihan-input w-full p-2 border rounded text-xs" rows="3" placeholder="A. Opsi A&#10;B. Opsi B&#10;C. Opsi C&#10;D. Opsi D">${qPilihan}</textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Index Jawaban Benar (0 = A, 1 = B, dst)</label>
-                        <input type="number" min="0" max="3" class="z3-jawaban-input w-full p-2 border rounded text-xs mb-2" value="${qJawaban}">
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Penjelasan Kunci Jawaban</label>
-                        <input type="text" class="z3-penjelasan-input w-full p-2 border rounded text-xs" value="${qPenjelasan}" placeholder="Alasan mengapa jawaban ini benar...">
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2 pt-1">
-                    <input type="checkbox" class="z3-alasan-check rounded text-emerald-600" ${qButuhAlasan ? 'checked' : ''}>
-                    <label class="text-xs text-slate-700 font-semibold">Minta siswa menyertakan alasan manual</label>
-                </div>
-            `;
-            container.appendChild(div);
-        }
-
-        function initLKPDForm() {
-            const current = lkpdDatabase[0];
-            if (!current) return;
-
-            document.getElementById('manual-title').value = current.judul;
-            document.getElementById('manual-z1-instruksi').value = current.zone1_mindful ? current.zone1_mindful.instruksi : "";
-            document.getElementById('manual-z1-materi').value = current.zone1_mindful ? (current.zone1_mindful.materi_singkat || "") : "";
-            document.getElementById('manual-z1-poin').value = current.zone1_mindful && current.zone1_mindful.poin_kesadaran ? current.zone1_mindful.poin_kesadaran.join("\n") : "";
-            document.getElementById('manual-z2-skenario').value = current.zone2_meaningful ? current.zone2_meaningful.skenario_kasus : "";
-
-            const z2Container = document.getElementById('zone2-questions-container');
-            z2Container.innerHTML = "";
-            if (current.zone2_meaningful && current.zone2_meaningful.kegiatan) {
-                current.zone2_meaningful.kegiatan.forEach(k => addZone2Question(k));
-            } else {
-                addZone2Question();
-            }
-
-            const z3Container = document.getElementById('zone3-questions-container');
-            z3Container.innerHTML = "";
-            const listReflektif = current.zone3_joyful ? (current.zone3_joyful.soal_reflektif_list || (current.zone3_joyful.soal_reflektif ? [current.zone3_joyful.soal_reflektif] : [])) : [];
-            if (listReflektif.length > 0) {
-                listReflektif.forEach(q => addZone3Question(q));
-            } else {
-                addZone3Question();
-            }
-
-            if (current.zone3_joyful && current.zone3_joyful.refleksi_diri) {
-                document.getElementById('manual-z3-emosi').value = (current.zone3_joyful.refleksi_diri.pilihan_emosi || []).join("\n");
-            }
-        }
-
-        function saveManualLKPD(e) {
-            e.preventDefault();
-
-            const title = document.getElementById('manual-title').value;
-            const z1Instruksi = document.getElementById('manual-z1-instruksi').value;
-            const z1Materi = document.getElementById('manual-z1-materi').value;
-            const z1Poin = document.getElementById('manual-z1-poin').value.split('\n').filter(p => p.trim() !== "");
-            const z2Skenario = document.getElementById('manual-z2-skenario').value;
-
-            const z2Kegiatan = [];
-            document.querySelectorAll('#zone2-questions-container > div').forEach(div => {
-                const tipe = div.querySelector('.z2-type-select').value;
-                const pertanyaan = div.querySelector('.z2-pertanyaan-input').value;
-                const item = { tipe, pertanyaan };
-
-                if (tipe === 'pilihan_pemecahan') {
-                    item.opsi_pilihan = div.querySelector('.z2-opsi-input').value.split('\n').filter(o => o.trim() !== "");
-                    item.kunci_jawaban_opsi = [0, 1, 2];
-                } else if (tipe === 'pengurutan_langkah') {
-                    item.langkah_acak = div.querySelector('.z2-langkah-input').value.split('\n').filter(l => l.trim() !== "");
-                } else {
-                    item.format_jawaban = "ruang_teks_kosong";
-                }
-                z2Kegiatan.push(item);
-            });
-
-            const z3List = [];
-            document.querySelectorAll('#zone3-questions-container > div').forEach(div => {
-                const pertanyaan = div.querySelector('.z3-pertanyaan-input').value;
-                const pilihan = div.querySelector('.z3-pilihan-input').value.split('\n').filter(p => p.trim() !== "");
-                const jawaban_benar = parseInt(div.querySelector('.z3-jawaban-input').value) || 0;
-                const penjelasan = div.querySelector('.z3-penjelasan-input').value || "";
-                const butuh_alasan_manual = div.querySelector('.z3-alasan-check').checked;
-                z3List.push({ pertanyaan, pilihan, jawaban_benar, penjelasan, butuh_alasan_manual });
-            });
-
-            const emosiList = document.getElementById('manual-z3-emosi').value.split('\n').filter(e => e.trim() !== "");
-
-            const updatedLKPD = {
-                id: Date.now(),
-                judul: title,
-                zone1_mindful: {
-                    instruksi: z1Instruksi,
-                    materi_singkat: z1Materi,
-                    poin_kesadaran: z1Poin
-                },
-                zone2_meaningful: {
-                    skenario_kasus: z2Skenario,
-                    kegiatan: z2Kegiatan
-                },
-                zone3_joyful: {
-                    soal_reflektif_list: z3List,
-                    refleksi_diri: {
-                        pilihan_emosi: emosiList,
-                        pesan_untuk_guru: "Hal paling menarik yang saya pelajari hari ini adalah..."
-                    }
-                }
-            };
-
-            lkpdDatabase.unshift(updatedLKPD);
-            activeLKPDIndex = 0;
-            alert("LKPD Berhasil Disimpan & Diterbitkan!");
-            switchTab('lkpd-view');
-        }
-
-        // AI PROMPT GENERATOR
-        function updatePromptPreview() {
-            const topic = document.getElementById('ai-topic-input').value || "Informatika";
-            const promptText = `Tolong buatkan Lembar Kerja Peserta Didik (LKPD) Informatika Kurikulum Merdeka berbasis Deep Learning (Mindful, Meaningful, Joyful Learning) dan Problem/Project Based Learning untuk topik "${topic}".
-
-PENTING ATURAN KURIKULUM BARU:
-1. DILARANG MENGGUNAKAN KATA "BAYANGKAN" ATAU "RASAKAN" pada Zone 1 (Mindful Learning). Gunakan kata-kata kesadaran observasional seperti "amati", "fokuskan", "perhatikan", "sadari".
-2. Sertakan ringkasan "materi_singkat" pembelajaran pada Zone 1 untuk memberikan pemahaman awal bagi siswa.
-3. Pada Zone 3, berikan field "jawaban_benar" (angka index 0=A, 1=B, dst) dan "penjelasan" alasan kunci jawabannya.
-
-Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau markdown penjelasan agar bisa langsung diimpor otomatis oleh sistem:
-
-{
-  "judul": "${topic}",
-  "zone1_mindful": {
-    "instruksi": "Petunjuk pemanasan berpikir dan pengamatan sejenak...",
-    "materi_singkat": "Rangkuman materi pembelajaran inti singkat...",
-    "poin_kesadaran": [
-      "Poin pemanasan 1...",
-      "Poin pemanasan 2...",
-      "Poin pemanasan 3..."
-    ]
-  },
-  "zone2_meaningful": {
-    "skenario_kasus": "Deskripsi studi kasus/masalah dunia nyata yang relevan dengan topik...",
-    "kegiatan": [
-      {
-        "tipe": "pilihan_pemecahan",
-        "pertanyaan": "Pilihlah 3 langkah/solusi yang paling tepat untuk menangani masalah di atas!",
-        "opsi_pilihan": [
-          "Opsi 1", "Opsi 2", "Opsi 3", "Opsi 4", "Opsi 5"
-        ],
-        "kunci_jawaban_opsi": [0, 1, 2]
-      },
-      {
-        "tipe": "pengurutan_langkah",
-        "pertanyaan": "Urutkan langkah-langkah prosedur berikut agar menjadi alur solusi yang runtut!",
-        "langkah_acak": [
-          "Langkah A...", "Langkah B...", "Langkah C...", "Langkah D..."
-        ]
-      },
-      {
-        "tipe": "isian_manual",
-        "pertanyaan": "Tuliskan alasan/analisis kalian mengapa memilih solusi tersebut dan buat kesimpulannya!",
-        "format_jawaban": "ruang_teks_kosong"
-      }
-    ]
-  },
-  "zone3_joyful": {
-    "soal_reflektif_list": [
-      {
-        "pertanyaan": "Soal studi kasus singkat untuk menguji pemahaman inti...",
-        "pilihan": ["A. Opsi A", "B. Opsi B", "C. Opsi C", "D. Opsi D"],
-        "jawaban_benar": 0,
-        "penjelasan": "Penjelasan mengapa opsi A adalah jawaban paling tepat...",
-        "butuh_alasan_manual": true
-      }
-    ],
-    "refleksi_diri": {
-      "pilihan_emosi": [
-        "Senang & Paham — Saya bisa menerapkan konsep ini dalam kehidupan sehari-hari.",
-        "Paham Tapi Masih Bingung — Saya perlu latihan lebih banyak.",
-        "Kesulitan — Saya butuh bantuan diskusi bersama teman/guru."
-      ],
-      "pesan_untuk_guru": "Hal paling menarik yang saya pelajari hari ini adalah..."
-    }
-  }
-}`;
-            document.getElementById('ai-prompt-preview').value = promptText;
-        }
-
-        document.getElementById('ai-topic-input').addEventListener('input', updatePromptPreview);
-
-        function copyGeminiPrompt() {
-            updatePromptPreview();
-            const promptArea = document.getElementById('ai-prompt-preview');
-            promptArea.select();
-            document.execCommand('copy');
-            alert("Prompt AI berhasil disalin! Buka Gemini AI, tempelkan prompt tersebut, lalu salin JSON balasannya ke kolom impor.");
-        }
-
-        function importJSONLKPD() {
-            const rawJSON = document.getElementById('ai-json-input').value.trim();
-            if (!rawJSON) {
-                alert("Kolom input JSON masih kosong!");
-                return;
-            }
-
-            try {
-                let cleanedJSON = rawJSON.replace(/```json/g, '').replace(/```/g, '').trim();
-                const data = JSON.parse(cleanedJSON);
-
-                let newLKPD = {
-                    id: Date.now(),
-                    judul: data.judul || "LKPD Pembelajaran Baru"
-                };
-
-                if (data.zone1_mindful || data.zone2_meaningful || data.zone3_joyful) {
-                    newLKPD.zone1_mindful = data.zone1_mindful || {
-                        instruksi: "Fokuskan pikiran sebelum memulai.",
-                        materi_singkat: "Materi singkat pembelajaran.",
-                        poin_kesadaran: ["Pahami tujuan pembelajaran."]
-                    };
-                    newLKPD.zone2_meaningful = data.zone2_meaningful || {
-                        skenario_kasus: "Skenario pembelajaran.",
-                        kegiatan: []
-                    };
-                    newLKPD.zone3_joyful = data.zone3_joyful || {
-                        soal_reflektif_list: [{ pertanyaan: "Soal evaluasi singkat.", pilihan: [], jawaban_benar: 0, penjelasan: "" }],
-                        refleksi_diri: { pilihan_emosi: ["Paham"], pesan_untuk_guru: "" }
-                    };
-                }
-
-                lkpdDatabase.unshift(newLKPD);
-                activeLKPDIndex = 0;
-                alert("LKPD Interaktif Berhasil Diterbitkan!");
-                document.getElementById('ai-json-input').value = "";
-                switchTab('lkpd-view');
-
-            } catch (err) {
-                alert("Gagal membaca format JSON dari AI!\nDetail Error: " + err.message);
-            }
-        }
-
-        function renderLKPDList() {
-            const container = document.getElementById('lkpd-list-container');
-            container.innerHTML = "";
-
-            lkpdDatabase.forEach((lkpd, idx) => {
-                const isActive = idx === activeLKPDIndex;
-                const btn = document.createElement('button');
-                btn.className = `w-full text-left p-3 rounded-lg text-xs font-semibold transition flex items-center justify-between border ${
-                    isActive ? 'bg-amber-50 border-amber-400 text-amber-900 shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
-                }`;
-                btn.onclick = () => {
-                    activeLKPDIndex = idx;
-                    renderLKPDList();
-                    renderActiveLKPD();
-                };
-
-                btn.innerHTML = `
-                    <span class="line-clamp-2">${idx + 1}. ${lkpd.judul}</span>
-                    <i class="fa-solid ${isActive ? 'fa-circle-check text-amber-600' : 'fa-chevron-right text-slate-400'} ml-2"></i>
-                `;
-                container.appendChild(btn);
-            });
-        }
-
-        function renderActiveLKPD() {
-            const lkpd = lkpdDatabase[activeLKPDIndex];
-            if (!lkpd) return;
-
-            document.getElementById('lkpd-active-title').innerText = lkpd.judul;
-            const container = document.getElementById('lkpd-content-area');
-            container.innerHTML = "";
-
-            // ZONE 1: MINDFUL LEARNING
-            if (lkpd.zone1_mindful) {
-                const z1 = document.createElement('div');
-                z1.className = "bg-blue-50 border-l-4 border-blue-600 p-5 rounded-r-xl space-y-3";
-                let poinHtml = "";
-                if (lkpd.zone1_mindful.poin_kesadaran) {
-                    poinHtml = lkpd.zone1_mindful.poin_kesadaran.map(p => `<li class="text-xs text-blue-900">${p}</li>`).join('');
-                }
-
-                z1.innerHTML = `
-                    <div class="flex items-center space-x-2 text-blue-900 font-bold text-sm">
-                        <i class="fa-solid fa-brain text-blue-600"></i>
-                        <span>ZONE 1: MINDFUL LEARNING (Fokus, Kesadaran & Materi Pembelajaran)</span>
-                    </div>
-                    <p class="text-xs text-blue-800 leading-relaxed font-medium">${lkpd.zone1_mindful.instruksi || ""}</p>
-                    
-                    ${lkpd.zone1_mindful.materi_singkat ? `
-                        <div class="bg-blue-100/70 p-3.5 rounded-lg border border-blue-200 space-y-1">
-                            <strong class="text-blue-950 text-xs flex items-center font-bold">
-                                <i class="fa-solid fa-book-open mr-1.5 text-blue-700"></i> Rangkuman Materi Pembelajaran:
-                            </strong>
-                            <p class="text-xs text-blue-900 leading-relaxed">${lkpd.zone1_mindful.materi_singkat}</p>
-                        </div>
-                    ` : ''}
-
-                    <ul class="list-disc list-inside space-y-1 bg-white p-3 rounded-lg border border-blue-100">
-                        ${poinHtml}
-                    </ul>
-                `;
-                container.appendChild(z1);
-            }
-
-            // ZONE 2: MEANINGFUL LEARNING
-            if (lkpd.zone2_meaningful) {
-                const z2 = document.createElement('div');
-                z2.className = "bg-amber-50/50 border-l-4 border-amber-500 p-5 rounded-r-xl space-y-5";
-                
-                let kegiatanHtml = "";
-                if (lkpd.zone2_meaningful.kegiatan) {
-                    lkpd.zone2_meaningful.kegiatan.forEach((keg, kIdx) => {
-                        if (keg.tipe === "pilihan_pemecahan") {
-                            const opsiHtml = (keg.opsi_pilihan || []).map((o, oIdx) => `
-                                <label class="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-slate-200 hover:bg-amber-50 cursor-pointer text-xs transition-colors z2-opt-label" data-optindex="${oIdx}">
-                                    <input type="checkbox" name="z2_keg_${kIdx}" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500">
-                                    <span class="text-slate-800">${o}</span>
-                                </label>
-                            `).join('');
-
-                            kegiatanHtml += `
-                                <div class="space-y-2" id="z2-qbox-${kIdx}">
-                                    <h4 class="font-bold text-xs text-slate-800">${kIdx + 1}. ${keg.pertanyaan}</h4>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${opsiHtml}</div>
-                                </div>
-                            `;
-                        } else if (keg.tipe === "pengurutan_langkah") {
-                            const langkahHtml = (keg.langkah_acak || []).map((l) => `
-                                <div class="flex items-center space-x-3 bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
-                                    <select class="p-1 border rounded bg-slate-50 font-bold text-amber-900 text-xs">
-                                        <option>Urutan...</option>
-                                        ${(keg.langkah_acak || []).map((_, i) => `<option value="${i+1}">Langkah ${i+1}</option>`).join('')}
-                                    </select>
-                                    <span class="text-slate-800">${l}</span>
-                                </div>
-                            `).join('');
-
-                            kegiatanHtml += `
-                                <div class="space-y-2 pt-2">
-                                    <h4 class="font-bold text-xs text-slate-800">${kIdx + 1}. ${keg.pertanyaan}</h4>
-                                    <div class="space-y-2">${langkahHtml}</div>
-                                </div>
-                            `;
-                        } else if (keg.tipe === "isian_manual") {
-                            kegiatanHtml += `
-                                <div class="space-y-2 pt-2">
-                                    <h4 class="font-bold text-xs text-slate-800">${kIdx + 1}. ${keg.pertanyaan}</h4>
-                                    <textarea rows="3" placeholder="Ketikkan analisis dan penjelasan alasan Anda di sini..." class="w-full p-3 border rounded-lg text-xs bg-white focus:ring-2 focus:ring-amber-500"></textarea>
-                                </div>
-                            `;
-                        }
-                    });
-                }
-
-                z2.innerHTML = `
-                    <div class="flex items-center space-x-2 text-amber-900 font-bold text-sm">
-                        <i class="fa-solid fa-puzzle-piece text-amber-600"></i>
-                        <span>ZONE 2: MEANINGFUL LEARNING (Aktivitas Studi Kasus)</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-amber-200 text-xs text-slate-700 leading-relaxed space-y-1">
-                        <strong class="text-amber-900 block font-bold">Studi Kasus / Deskripsi Masalah:</strong>
-                        <p>${lkpd.zone2_meaningful.skenario_kasus || ""}</p>
-                    </div>
-                    <div class="space-y-4">${kegiatanHtml}</div>
-                `;
-                container.appendChild(z2);
-            }
-
-            // ZONE 3: JOYFUL LEARNING
-            if (lkpd.zone3_joyful) {
-                const z3 = document.createElement('div');
-                z3.className = "bg-emerald-50/50 border-l-4 border-emerald-500 p-5 rounded-r-xl space-y-4";
-                
-                let kuisListHtml = "";
-                const listReflektif = lkpd.zone3_joyful.soal_reflektif_list || (lkpd.zone3_joyful.soal_reflektif ? [lkpd.zone3_joyful.soal_reflektif] : []);
-                
-                listReflektif.forEach((soalItem, qIdx) => {
-                    let pilihanHtml = "";
-                    if (soalItem.pilihan) {
-                        pilihanHtml = soalItem.pilihan.map((p, pIdx) => `
-                            <label class="flex items-center space-x-2 p-2.5 bg-white rounded-lg border border-slate-200 hover:bg-emerald-50 cursor-pointer text-xs transition-colors z3-opt-label" data-optindex="${pIdx}">
-                                <input type="radio" name="z3_soal_${qIdx}" value="${pIdx}" class="text-emerald-600 focus:ring-emerald-500">
-                                <span class="text-slate-800">${p}</span>
-                            </label>
-                        `).join('');
-                    }
-
-                    kuisListHtml += `
-                        <div class="bg-white p-4 rounded-xl border border-emerald-200 space-y-3" id="z3-qbox-${qIdx}">
-                            <h4 class="font-bold text-xs text-slate-800">${qIdx + 1}. ${soalItem.pertanyaan}</h4>
-                            <div class="space-y-1.5">${pilihanHtml}</div>
-                            <div class="z3-explanation-box hidden pt-2"></div>
-
-                            ${soalItem.butuh_alasan_manual ? `
-                                <textarea rows="2" placeholder="Tuliskan alasan singkat jawaban Anda..." class="w-full p-2 border rounded-lg text-xs bg-slate-50 mt-2"></textarea>
-                            ` : ''}
-                        </div>
-                    `;
-                });
-
-                let emosiHtml = "";
-                if (lkpd.zone3_joyful.refleksi_diri && lkpd.zone3_joyful.refleksi_diri.pilihan_emosi) {
-                    emosiHtml = lkpd.zone3_joyful.refleksi_diri.pilihan_emosi.map(e => `
-                        <label class="flex items-center space-x-2 p-2 bg-white rounded-lg border border-slate-200 hover:bg-emerald-50 cursor-pointer text-xs">
-                            <input type="radio" name="z3_emotions" class="text-emerald-600 focus:ring-emerald-500">
-                            <span class="text-slate-800">${e}</span>
-                        </label>
-                    `).join('');
-                }
-
-                z3.innerHTML = `
-                    <div class="flex items-center space-x-2 text-emerald-900 font-bold text-sm">
-                        <i class="fa-solid fa-face-smile text-emerald-600"></i>
-                        <span>ZONE 3: JOYFUL LEARNING (Uji Pemahaman, Tantangan & Refleksi Diri)</span>
-                    </div>
-
-                    <div class="space-y-3">${kuisListHtml}</div>
-
-                    <div class="space-y-2 pt-2">
-                        <h4 class="font-bold text-xs text-emerald-900">Refleksi Perasaan & Pemahaman Belajar Hari Ini:</h4>
-                        <div class="space-y-1.5">${emosiHtml}</div>
-                        <div class="pt-2">
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Pesan / Catatan untuk Guru:</label>
-                            <input type="text" placeholder="${lkpd.zone3_joyful.refleksi_diri ? lkpd.zone3_joyful.refleksi_diri.pesan_untuk_guru : ''}" class="w-full p-2 border rounded-lg text-xs bg-white">
-                        </div>
-                    </div>
-                `;
-                container.appendChild(z3);
-            }
-        }
-
-        function submitLKPD() {
-            const lkpd = lkpdDatabase[activeLKPDIndex];
-            if (!lkpd) return;
-
-            let totalPoin = 0;
-            let poinDiperoleh = 0;
-
-            if (lkpd.zone2_meaningful && lkpd.zone2_meaningful.kegiatan) {
-                lkpd.zone2_meaningful.kegiatan.forEach((keg, kIdx) => {
-                    if (keg.tipe === "pilihan_pemecahan") {
-                        const kunciOpsi = keg.kunci_jawaban_opsi || [0, 1, 2];
-                        const labels = document.querySelectorAll(`#z2-qbox-${kIdx} .z2-opt-label`);
-
-                        labels.forEach((label) => {
-                            const optIndex = parseInt(label.dataset.optindex);
-                            const cb = label.querySelector('input[type="checkbox"]');
-                            const isCorrectOpt = kunciOpsi.includes(optIndex);
-
-                            totalPoin++;
-
-                            if (cb.checked) {
-                                if (isCorrectOpt) {
-                                    label.className = "flex items-start space-x-2.5 p-2.5 bg-emerald-100 border-2 border-emerald-500 text-emerald-900 font-bold rounded-lg text-xs";
-                                    poinDiperoleh++;
-                                } else {
-                                    label.className = "flex items-start space-x-2.5 p-2.5 bg-rose-100 border-2 border-rose-500 text-rose-900 font-bold rounded-lg text-xs";
-                                }
-                            } else if (isCorrectOpt) {
-                                label.className = "flex items-start space-x-2.5 p-2.5 bg-emerald-50 border-2 border-dashed border-emerald-400 text-emerald-800 rounded-lg text-xs";
-                            }
-                        });
-                    }
-                });
-            }
-
-            const listReflektif = lkpd.zone3_joyful ? (lkpd.zone3_joyful.soal_reflektif_list || (lkpd.zone3_joyful.soal_reflektif ? [lkpd.zone3_joyful.soal_reflektif] : [])) : [];
-            
-            listReflektif.forEach((soalItem, qIdx) => {
-                totalPoin++;
-                const qBox = document.getElementById(`z3-qbox-${qIdx}`);
-                const labels = qBox.querySelectorAll('.z3-opt-label');
-                const expBox = qBox.querySelector('.z3-explanation-box');
-                
-                const idxJawabanBenar = soalItem.jawaban_benar !== undefined ? soalItem.jawaban_benar : 0;
-                const teksJawabanBenar = soalItem.pilihan && soalItem.pilihan[idxJawabanBenar] ? soalItem.pilihan[idxJawabanBenar] : "Jawaban Benar";
-
-                let isUserCorrect = false;
-
-                labels.forEach((label) => {
-                    const optIndex = parseInt(label.dataset.optindex);
-                    const radio = label.querySelector('input[type="radio"]');
-
-                    if (radio.checked) {
-                        if (optIndex === idxJawabanBenar) {
-                            label.className = "flex items-center space-x-2 p-2.5 bg-emerald-100 border-2 border-emerald-500 text-emerald-900 font-bold rounded-lg text-xs";
-                            isUserCorrect = true;
-                            poinDiperoleh++;
-                        } else {
-                            label.className = "flex items-center space-x-2 p-2.5 bg-rose-100 border-2 border-rose-500 text-rose-900 font-bold rounded-lg text-xs";
-                        }
-                    } else if (optIndex === idxJawabanBenar) {
-                        label.className = "flex items-center space-x-2 p-2.5 bg-emerald-50 border-2 border-dashed border-emerald-400 text-emerald-800 rounded-lg text-xs font-semibold";
-                    }
-                });
-
-                if (expBox) {
-                    expBox.classList.remove('hidden');
-                    if (isUserCorrect) {
-                        expBox.innerHTML = `
-                            <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-900">
-                                <strong class="font-bold flex items-center text-emerald-700">
-                                    <i class="fa-solid fa-circle-check mr-1.5 text-emerald-600"></i> Jawaban Anda Tepat!
-                                </strong>
-                                <p class="mt-1">${soalItem.penjelasan || "Pemahaman Anda pada konsep ini sudah sangat baik."}</p>
-                            </div>
-                        `;
-                    } else {
-                        expBox.innerHTML = `
-                            <div class="p-3 bg-amber-50 border border-amber-300 rounded-lg text-xs text-amber-950 space-y-1">
-                                <strong class="font-bold flex items-center text-amber-800">
-                                    <i class="fa-solid fa-circle-xmark mr-1.5 text-rose-600"></i> Kunci Jawaban Benar: <span class="ml-1 text-emerald-700 underline">${teksJawabanBenar}</span>
-                                </strong>
-                                <p class="text-slate-700 leading-relaxed"><strong class="text-amber-900">Penjelasan:</strong> ${soalItem.penjelasan || "Perhatikan kembali pembahasan materi pada Zone 1."}</p>
-                            </div>
-                        `;
-                    }
-                }
-            });
-
-            alert(`Pengerjaan LKPD Telah Diperiksa!\n\nHasil Uji Pemahaman: ${poinDiperoleh} / ${totalPoin} Poin Tepat.`);
-
-            setTimeout(() => {
-                if(confirm("Apakah Anda ingin mencetak / menyimpan hasil pengerjaan LKPD ini ke PDF sekarang?")) {
-                    window.print();
-                }
-            }, 500);
-        }
-
-        const defaultSteps = {
-            step1: "1. Guru membuka pembelajaran dengan salam dan doa bersama.\n2. Guru mengecek kesiapan dan memberikan pertanyaan pemantik (Mindful).\n3. Guru menyampaikan tujuan pembelajaran hari ini.",
-            step2: "1. Siswa mengamati tayangan slide / media interaktif tentang permasalahan materi.\n2. Guru memberikan gambaran kasus dunia nyata untuk memicu diskusi.",
-            step3: "1. Siswa dibagi ke dalam beberapa kelompok kecil.\n2. Masing-masing kelompok menerima LKPD berbasis masalah.",
-            step4: "1. Siswa berdiskusi bersama kelompok mengidentifikasi dan mengurutkan alur pemecahan masalah.\n2. Guru membimbing kelompok yang mengalami kesulitan.",
-            step5: "1. Masing-masing kelompok mempresentasikan hasil diskusi LKPD di depan kelas.\n2. Kelompok lain memberikan tanggapan atau pertanyaan.",
-            step6: "1. Guru memberikan apresiasi dan umpan balik positif (Joyful).\n2. Siswa mengisi lembar refleksi diri.\n3. Pembelajaran ditutup dengan doa dan salam."
-        };
-
-        function resetStepsToDefault() {
-            document.getElementById('edit-step-1').value = defaultSteps.step1;
-            document.getElementById('edit-step-2').value = defaultSteps.step2;
-            document.getElementById('edit-step-3').value = defaultSteps.step3;
-            document.getElementById('edit-step-4').value = defaultSteps.step4;
-            document.getElementById('edit-step-5').value = defaultSteps.step5;
-            document.getElementById('edit-step-6').value = defaultSteps.step6;
         }
 
         function onModelChange() {
@@ -1708,15 +724,10 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
             document.getElementById('prefix-model-name').innerText = modelVal;
         }
 
-        // INITIALIZATION
         window.addEventListener('DOMContentLoaded', () => {
             resetStepsToDefault();
-            updatePromptPreview();
             renderRPPHistoryTable();
             renderSelectedRPP();
-            renderLKPDList();
-            renderActiveLKPD();
-            renderLinkCards();
         });
     </script>
 </body>

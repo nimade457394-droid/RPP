@@ -882,7 +882,7 @@
 
         let activeLKPDIndex = 0;
 
-        // BUKA LANGSUNG FORM EDRTOR RPP DARI MENU NAVBAR
+        // BUKA LANGSUNG FORM EDITOR RPP DARI MENU NAVBAR
         function openRPPEditorDirectly() {
             switchTab('rpp-editor');
             initRPPForm();
@@ -931,7 +931,7 @@
             menu.classList.toggle('hidden');
         }
 
-        // MEDIA DINAMIS INPU
+        // MEDIA DINAMIS INPUT
         function addDynamicMediaInput(valueText = "") {
             const container = document.getElementById('dynamic-media-container');
             const div = document.createElement('div');
@@ -1261,10 +1261,10 @@
         }
 
         function initLKPDForm() {
-            const current = lkpdDatabase[0];
+            const current = lkpdDatabase[activeLKPDIndex] || lkpdDatabase[0];
             if (!current) return;
 
-            document.getElementById('manual-title').value = current.judul;
+            document.getElementById('manual-title').value = current.judul || "";
             document.getElementById('manual-z1-instruksi').value = current.zone1_mindful ? current.zone1_mindful.instruksi : "";
             document.getElementById('manual-z1-materi').value = current.zone1_mindful ? (current.zone1_mindful.materi_singkat || "") : "";
             document.getElementById('manual-z1-poin').value = current.zone1_mindful && current.zone1_mindful.poin_kesadaran ? current.zone1_mindful.poin_kesadaran.join("\n") : "";
@@ -1641,7 +1641,7 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa markdown teks penjela
 
                             totalPoin++;
 
-                            if (cb.checked) {
+                            if (cb && cb.checked) {
                                 if (isCorrectOpt) {
                                     label.className = "flex items-start space-x-2.5 p-2.5 bg-emerald-100 border-2 border-emerald-500 text-emerald-900 font-bold rounded-lg text-xs";
                                     poinDiperoleh++;
@@ -1661,6 +1661,8 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa markdown teks penjela
             listReflektif.forEach((soalItem, qIdx) => {
                 totalPoin++;
                 const qBox = document.getElementById(`z3-qbox-${qIdx}`);
+                if (!qBox) return;
+
                 const labels = qBox.querySelectorAll('.z3-opt-label');
                 const expBox = qBox.querySelector('.z3-explanation-box');
                 
@@ -1673,7 +1675,7 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa markdown teks penjela
                     const optIndex = parseInt(label.dataset.optindex);
                     const radio = label.querySelector('input[type="radio"]');
 
-                    if (radio.checked) {
+                    if (radio && radio.checked) {
                         if (optIndex === idxJawabanBenar) {
                             label.className = "flex items-center space-x-2 p-2.5 bg-emerald-100 border-2 border-emerald-500 text-emerald-900 font-bold rounded-lg text-xs";
                             isUserCorrect = true;

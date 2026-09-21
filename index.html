@@ -580,10 +580,13 @@
 
         let activeLKPDIndex = 0;
 
-        // AUTHENTICATION DUMMY
+        // AUTHENTICATION DUMMY DENGAN PIN BARU
         function requestAuth(targetTab) {
-            const pin = prompt("Masukkan PIN Akses Guru (Default: 1234):");
-            if (pin === "1234" || pin === "") {
+            const pin = prompt("Masukkan PIN Akses Guru:");
+            if (pin === null) return;
+
+            const cleanPin = pin.trim();
+            if (cleanPin === "Ayuulan1234#") {
                 switchTab(targetTab);
             } else {
                 alert("PIN Salah! Akses ditolak.");
@@ -692,7 +695,7 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
             alert("Prompt AI berhasil disalin! Buka Gemini AI, tempelkan prompt tersebut, lalu salin JSON balasannya ke kolom impor.");
         }
 
-        // PARSER & IMPOR JSON LKPD (FLEKSIBEL 3 ZONE & KUIS LAMA)
+        // PARSER & IMPOR JSON LKPD
         function importJSONLKPD() {
             const rawJSON = document.getElementById('ai-json-input').value.trim();
             if (!rawJSON) {
@@ -701,7 +704,6 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
             }
 
             try {
-                // Bersihkan tag markdown ```json jika disalin dari AI
                 let cleanedJSON = rawJSON.replace(/```json/g, '').replace(/```/g, '').trim();
                 const data = JSON.parse(cleanedJSON);
 
@@ -710,7 +712,6 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                     judul: data.judul || "LKPD Pembelajaran Baru"
                 };
 
-                // BILA MENGGUNAKAN STRUKTUR BARU (3 ZONE)
                 if (data.zone1_mindful || data.zone2_meaningful || data.zone3_joyful) {
                     newLKPD.zone1_mindful = data.zone1_mindful || {
                         instruksi: "Fokuskan pikiran sebelum memulai.",
@@ -724,9 +725,7 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                         soal_reflektif: { pertanyaan: "Soal evaluasi singkat.", pilihan: [] },
                         refleksi_diri: { pilihan_emosi: ["Paham"], pesan_untuk_guru: "" }
                     };
-                } 
-                // JIKA MENGGUNAKAN FORMAT SOAL LAMA (BACKWARD COMPATIBILITY)
-                else if (data.soal && Array.isArray(data.soal)) {
+                } else if (data.soal && Array.isArray(data.soal)) {
                     newLKPD.zone1_mindful = {
                         instruksi: "Bacalah setiap pertanyaan kuis berikut dengan cermat.",
                         poin_kesadaran: ["Fokus pada konsep inti materi."]
@@ -798,7 +797,7 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
             const container = document.getElementById('lkpd-content-area');
             container.innerHTML = "";
 
-            // --- ZONE 1: MINDFUL LEARNING ---
+            // ZONE 1: MINDFUL LEARNING
             if (lkpd.zone1_mindful) {
                 const z1 = document.createElement('div');
                 z1.className = "bg-blue-50 border-l-4 border-blue-600 p-5 rounded-r-xl space-y-3";
@@ -820,7 +819,7 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                 container.appendChild(z1);
             }
 
-            // --- ZONE 2: MEANINGFUL LEARNING ---
+            // ZONE 2: MEANINGFUL LEARNING
             if (lkpd.zone2_meaningful) {
                 const z2 = document.createElement('div');
                 z2.className = "bg-amber-50/50 border-l-4 border-amber-500 p-5 rounded-r-xl space-y-5";
@@ -884,7 +883,7 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                 container.appendChild(z2);
             }
 
-            // --- ZONE 3: JOYFUL LEARNING ---
+            // ZONE 3: JOYFUL LEARNING
             if (lkpd.zone3_joyful) {
                 const z3 = document.createElement('div');
                 z3.className = "bg-emerald-50/50 border-l-4 border-emerald-500 p-5 rounded-r-xl space-y-4";
@@ -915,7 +914,6 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                         <span>ZONE 3: JOYFUL LEARNING (Uji Pemahaman & Refleksi Diri)</span>
                     </div>
 
-                    <!-- Soal Reflektif -->
                     <div class="bg-white p-4 rounded-xl border border-emerald-200 space-y-3">
                         <h4 class="font-bold text-xs text-slate-800">${lkpd.zone3_joyful.soal_reflektif ? lkpd.zone3_joyful.soal_reflektif.pertanyaan : ''}</h4>
                         <div class="space-y-1.5">${pilihanHtml}</div>
@@ -924,7 +922,6 @@ PENTING: Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahu
                         ` : ''}
                     </div>
 
-                    <!-- Refleksi Diri -->
                     <div class="space-y-2 pt-2">
                         <h4 class="font-bold text-xs text-emerald-900">Refleksi Perasaan & Pemahaman Belajar Hari Ini:</h4>
                         <div class="space-y-1.5">${emosiHtml}</div>

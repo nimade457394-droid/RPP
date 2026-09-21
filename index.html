@@ -3,46 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LKPD Digital Interaktif</title>
+    <title>Sistem Modul Ajar & LKPD Digital Interaktif</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icon CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased font-sans">
+<body class="bg-slate-100 text-slate-800 antialiased font-sans min-h-screen">
 
-    <div class="max-w-4xl mx-auto my-8 p-4 sm:p-6 bg-white rounded-2xl shadow-xl border border-slate-200">
-        
-        <!-- HEADER LKPD -->
-        <header class="border-b border-slate-200 pb-5 mb-6 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 font-semibold text-xs rounded-full mb-2">LKPD Digital Informatik</span>
-                <h1 id="lkpd-active-title" class="text-xl sm:text-2xl font-bold text-slate-900">Memuat LKPD...</h1>
+    <!-- NAVBAR TOP -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                <!-- LOGO & BRAND -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-200">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-slate-800 text-sm sm:text-base leading-tight">Perangkat Ajar Digital</h1>
+                        <p class="text-slate-500 text-xs">Kurikulum Merdeka</p>
+                    </div>
+                </div>
+
+                <!-- NAVIGATION TABS -->
+                <div class="flex space-x-1 sm:space-x-2 bg-slate-100 p-1 rounded-xl">
+                    <button id="tab-btn-modul" onclick="switchTab('modul')" class="tab-btn px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-book mr-1.5"></i>Modul Ajar
+                    </button>
+                    <button id="tab-btn-lkpd" onclick="switchTab('lkpd')" class="tab-btn px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white text-blue-600 shadow-sm">
+                        <i class="fa-solid fa-file-pen mr-1.5"></i>LKPD Digital
+                    </button>
+                    <button id="tab-btn-admin" onclick="switchTab('admin')" class="tab-btn px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-folder-open mr-1.5"></i>Administrasi
+                    </button>
+                </div>
             </div>
-            <button onclick="submitLKPD()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span>Simpan & Kumpulkan</span>
-            </button>
-        </header>
+        </div>
+    </nav>
 
-        <!-- AREA KONTEN LKPD (DYNAMICALLY RENDERED BY JS) -->
-        <main id="lkpd-content-area" class="space-y-6">
-            <!-- Konten Zone 1, 2, dan 3 akan dirender otomatis melalui JavaScript -->
-        </main>
+    <!-- CONTAINER UTAMA -->
+    <main class="max-w-5xl mx-auto my-6 px-4">
 
-    </div>
+        <!-- TAB 1: MODUL AJAR -->
+        <section id="tab-content-modul" class="tab-content hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+            <div class="border-b border-slate-200 pb-4">
+                <span class="px-2.5 py-1 bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-md">Modul Ajar Informatika</span>
+                <h2 class="text-xl font-bold text-slate-900 mt-2">Pencarian Data (Searching) & Algoritma</h2>
+                <p class="text-slate-500 text-xs mt-1">Fase D / Kelas IX - Semester 1</p>
+            </div>
+            <div class="prose max-w-none text-xs sm:text-sm text-slate-700 space-y-3">
+                <h3 class="font-bold text-slate-800 text-base">A. Capaian Pembelajaran (CP)</h3>
+                <p>Pada akhir fase D, peserta didik mampu menerapkan berpikir komputasional untuk menghasilkan beberapa solusi dalam menyelesaikan persoalan dengan data diskrit bervolume kecil dan mendisposisikan berpikir komputasional dalam bidang lain.</p>
+                
+                <h3 class="font-bold text-slate-800 text-base">B. Tujuan Pembelajaran</h3>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>Peserta didik mampu menjelaskan konsep algoritma pencarian (Searching).</li>
+                    <li>Peserta didik mampu membandingkan efisiensi antara Sequential Search dan Binary Search.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- TAB 2: LKPD DIGITAL INTERAKTIF -->
+        <section id="tab-content-lkpd" class="tab-content bg-white p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-200 space-y-6">
+            
+            <!-- HEADER LKPD -->
+            <header class="border-b border-slate-200 pb-5 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 font-semibold text-xs rounded-full mb-2">LKPD Digital Informatika</span>
+                    <h1 id="lkpd-active-title" class="text-xl sm:text-2xl font-bold text-slate-900">Memuat LKPD...</h1>
+                </div>
+                <button onclick="submitLKPD()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Simpan & Kumpulkan</span>
+                </button>
+            </header>
+
+            <!-- AREA DYNAMIC CONTENT (ZONE 1, ZONE 2, ZONE 3) -->
+            <div id="lkpd-content-area" class="space-y-6">
+                <!-- Konten dinamis dirender via JavaScript -->
+            </div>
+
+        </section>
+
+        <!-- TAB 3: ADMINISTRASI GURU -->
+        <section id="tab-content-admin" class="tab-content hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+            <h2 class="text-lg font-bold text-slate-900 border-b pb-2">Rekapitulasi Administrasi & Nilai Siswa</h2>
+            <p class="text-slate-600 text-xs sm:text-sm">Halaman ini digunakan guru untuk memantau hasil pengumpulan LKPD dan laporan penilaian peserta didik.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm text-slate-600">
+                    <thead class="bg-slate-50 text-slate-800 uppercase font-bold text-xs border-b">
+                        <tr>
+                            <th class="p-3">No</th>
+                            <th class="p-3">Nama Siswa</th>
+                            <th class="p-3">LKPD</th>
+                            <th class="p-3">Skor Zone 3</th>
+                            <th class="p-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-3">1</td>
+                            <td class="p-3 font-semibold text-slate-800">Ahmad Rizky</td>
+                            <td class="p-3">Pencarian Data (Searching)</td>
+                            <td class="p-3 font-bold text-emerald-600">100 / 100</td>
+                            <td class="p-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full font-bold">Selesai</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
         let activeLKPDIndex = 0;
 
-        // DATABASE LKPD (DAPAT DITAMBAH ATAU DISUAIKAN MATERINYA)
+        // FUNGSI SWITCH TAB (MODUL, LKPD, ADMIN)
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-blue-600', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            const activeContent = document.getElementById(`tab-content-${tabName}`);
+
+            if (activeContent) activeContent.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-blue-600', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+        }
+
+        // DATABASE LKPD
         let lkpdDatabase = [
             {
                 id: 1,
                 judul: "Pencarian Data (Searching) & Algoritma",
                 
-                // ZONE 1: PENAMBAHAN MATERI SINGKAT & KATA AKSI UNTUK KURIKULUM MERDEKA
+                // ZONE 1: Ditambahkan Materi Pembelajaran & KKO Kurikulum Merdeka (Amati, Cermati, Bandingkan)
                 zone1_mindful: {
                     materi_singkat: "Algoritma Pencarian (Searching) adalah proses menemukan data tertentu di dalam sekumpulan data. Pencarian pada data yang terstruktur/terurut jauh lebih cepat dibandingkan data acak (Unsorted).",
                     instruksi: "Hening sejenak, tarik napas dalam-dalam, lalu cermati dua pengalaman mencari barang berikut sebelum masuk ke materi.",
@@ -53,7 +156,7 @@
                     ]
                 },
 
-                // ZONE 2: STIMULUS STUDI KASUS (BISA DITAMBAH APLIKASI SOALNYA)
+                // ZONE 2: Mendukung Banyak Aktivitas/Studi Kasus
                 zone2_meaningful: {
                     skenario_kasus: "Di perpustakaan sekolah, terdapat 1.000 buku yang belum dikelompokkan dan disebar acak di meja. Siswa diminta menemukan buku 'Informatika Kelas 9' dalam waktu 2 menit.",
                     kegiatan: [
@@ -73,7 +176,7 @@
                     ]
                 },
 
-                // ZONE 3: DUKUNGAN 10 SOAL BERBENTUK ARRAY (MENCEGAH 'UNDEFINED')
+                // ZONE 3: Berbentuk Array Lengkap (Support 10 Soal Tanpa Undefined)
                 zone3_joyful: {
                     soal_reflektif: [
                         {
@@ -143,19 +246,22 @@
                             "Cukup Paham — Saya perlu latihan soal lebih lanjut.",
                             "Masih Bingung — Saya butuh bimbingan ulang dari guru."
                         ],
-                        pesan_untuk_guru: "Tuliskan pesan atau catatan kamu di sini..."
+                        pesan_untuk_guru: "Tuliskan kesan atau catatan kamu di sini..."
                     }
                 }
             }
         ];
 
-        // FUNGSI UNTUK MERENDER KONTEN KE HALAMAN
+        // FUNGSI UNTUK MERENDER KONTEN LKPD SECAARA DINAMIS
         function renderActiveLKPD() {
             const lkpd = lkpdDatabase[activeLKPDIndex];
             if (!lkpd) return;
 
-            document.getElementById('lkpd-active-title').innerText = lkpd.judul;
+            const titleElem = document.getElementById('lkpd-active-title');
+            if (titleElem) titleElem.innerText = lkpd.judul;
+
             const container = document.getElementById('lkpd-content-area');
+            if (!container) return;
             container.innerHTML = "";
 
             // --- ZONE 1: MINDFUL LEARNING ---
@@ -320,9 +426,12 @@
             });
 
             alert(`LKPD Berhasil Disimpan!\nHasil Evaluasi Pilihan Ganda: ${benar} dari ${totalSoal} soal dijawab dengan benar.`);
+            
+            // Otomatis pindah ke tab administrasi setelah disubmit
+            switchTab('admin');
         }
 
-        // EXECUTE INITIAL RENDER
+        // INISIALISASI PROGRAM
         document.addEventListener("DOMContentLoaded", () => {
             renderActiveLKPD();
         });

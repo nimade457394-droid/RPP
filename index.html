@@ -1042,10 +1042,13 @@
             rppDatabase.unshift(newRPP);
             selectedRPPIndex = 0;
             
-            alert("RPP Berhasil Disimpan! Anda sekarang dapat mencetak atau mengunduh dokumen RPP ke format PDF.");
+            // Berpindah tab lalu trigger cetak/unduh PDF otomatis
             switchTab('rpp-view');
-        }
 
+            setTimeout(() => {
+                downloadRPPPDF();
+            }, 300);
+        }
         function renderRPPHistoryTable() {
             const tbody = document.getElementById('rpp-history-table-body');
             tbody.innerHTML = "";

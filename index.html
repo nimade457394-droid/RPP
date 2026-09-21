@@ -72,7 +72,7 @@
                         </div>
                     </div>
 
-                    <!-- Dropdown Materi (Classroom) -->
+                    <!-- Dropdown Materi -->
                     <div class="relative group">
                         <button class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
                             <i class="fa-solid fa-book-open"></i>
@@ -89,7 +89,7 @@
                         </div>
                     </div>
 
-                    <!-- Dropdown Kuis (Game) -->
+                    <!-- Dropdown Kuis -->
                     <div class="relative group">
                         <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
                             <i class="fa-solid fa-gamepad"></i>
@@ -189,7 +189,7 @@
                                 <th class="p-4">Tanggal</th>
                                 <th class="p-4">Mata Pelajaran</th>
                                 <th class="p-4">Materi Utama / Kelas</th>
-                                <th class="p-4 text-center">Aksi</th>
+                                <th class="p-4">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="rpp-history-table-body" class="divide-y divide-slate-100">
@@ -277,7 +277,7 @@
                         <div>
                             <p class="text-xs text-slate-500">Guru Mata Pelajaran,</p>
                             <div class="h-16"></div>
-                            <p class="font-bold text-slate-800 underline" id="display-ttd-penulis">( Ni Made Ayu Ulandari, S.Pd )</p>
+                            <p class="font-bold text-slate-800 underline">( .................................................... )</p>
                             <p class="text-xs text-slate-500 mt-1">NIP. ....................................................</p>
                         </div>
                     </div>
@@ -290,7 +290,7 @@
             <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8 space-y-6">
                 <div class="flex justify-between items-center border-b pb-4">
                     <div>
-                        <h2 class="text-2xl font-black text-blue-900" id="rpp-editor-title">Mulai Menyusun RPP Baru</h2>
+                        <h2 class="text-2xl font-black text-blue-900">Mulai Menyusun RPP</h2>
                         <p class="text-sm text-slate-500">Isi formulir penyusunan RPP berikut untuk menambahkan ke histori dan siap diunduh.</p>
                     </div>
                     <button onclick="switchTab('rpp-view')" class="text-slate-400 hover:text-slate-600 text-xl font-bold">
@@ -345,7 +345,7 @@
                         <textarea id="input-tujuan-suffix" rows="2" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">dan pengamatan media interaktif, peserta didik mampu mengidentifikasi berbagai jenis perangkat keras (hardware) dan perangkat lunak (software) beserta fungsinya secara tepat, kritis, dan kolaboratif.</textarea>
                     </div>
 
-                    <!-- MEDIA, ALAT, SUMBER BELAJAR DINAMIS -->
+                    <!-- Dynamic Media, Alat, dan Sumber Belajar -->
                     <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 space-y-3">
                         <div class="flex justify-between items-center">
                             <h3 class="font-bold text-sm text-slate-800">Media, Alat, dan Sumber Belajar</h3>
@@ -357,7 +357,7 @@
                         <p class="text-xs text-slate-500">Anda dapat memasukkan teks penjelasan maupun link URL media belajar secara dinamis.</p>
                         
                         <div id="dynamic-media-container" class="space-y-2">
-                            <!-- Input dinamis akan dimuat di sini oleh JS -->
+                            <!-- Input dinamis dimuat oleh JS -->
                         </div>
                     </div>
 
@@ -743,7 +743,6 @@
         ];
 
         let selectedRPPIndex = 0;
-        let editingRPPId = null; // Menyimpan ID RPP saat mode edit
 
         let linkDatabase = {
             materi: [
@@ -835,8 +834,8 @@
 
         let activeLKPDIndex = 0;
 
-        // AUTENTIKASI PASSWORD UNTUK SEMUA MENU GURU
-        function requestAuth(targetTab, editIndex = null) {
+        // AUTENTIKASI PASSWORD UNTUK MENU GURU
+        function requestAuth(targetTab) {
             const pass = prompt("Masukkan Password Khusus Guru:");
             if (pass === null) return;
 
@@ -844,7 +843,7 @@
                 if(targetTab === 'lkpd-editor') {
                     initLKPDForm();
                 } else if(targetTab === 'rpp-editor') {
-                    initRPPForm(editIndex);
+                    initRPPForm();
                 }
                 switchTab(targetTab);
             } else {
@@ -880,7 +879,7 @@
             menu.classList.toggle('hidden');
         }
 
-        // PENANGANAN MEDIA DENGAN TANDA TAMBAHKAN DYNAMIC
+        // DYNAMIC MEDIA ITEM LOGIC (RPP EDITOR)
         function addDynamicMediaInput(valueText = "") {
             const container = document.getElementById('dynamic-media-container');
             const div = document.createElement('div');
@@ -894,28 +893,9 @@
             container.appendChild(div);
         }
 
-        function initRPPForm(editIndex = null) {
-            let current;
-            if (editIndex !== null && rppDatabase[editIndex]) {
-                current = rppDatabase[editIndex];
-                editingRPPId = current.id;
-                document.getElementById('rpp-editor-title').innerText = "Edit RPP tersimpan";
-            } else {
-                editingRPPId = null;
-                document.getElementById('rpp-editor-title').innerText = "Mulai Menyusun RPP Baru";
-                current = {
-                    penulis: "Ni Made Ayu Ulandari, S.Pd",
-                    sekolah: "SMP Negeri Informatika",
-                    mapel: "Informatika / TIK",
-                    alokasi: "2 x 45 Menit (1 Pertemuan)",
-                    materiUtama: "Perangkat Keras & Software",
-                    model: "Problem-Based Learning (PBL)",
-                    cp: "Pada akhir fase D, peserta didik mampu mengidentifikasi komponen, fungsi, dan cara kerja komputer, perangkat keras, serta perangkat lunak pendukung dalam kehidupan sehari-hari.",
-                    tujuanSuffix: "dan pengamatan media interaktif, peserta didik mampu mengidentifikasi berbagai jenis perangkat keras (hardware) dan perangkat lunak (software) beserta fungsinya secara tepat, kritis, dan kolaboratif.",
-                    mediaList: ["Buku Teks Informatika Kelas 9 & PPT Interaktif", "https://www.youtube.com/results?search_query=perangkat+keras+komputer"],
-                    steps: defaultSteps
-                };
-            }
+        function initRPPForm() {
+            const current = rppDatabase[selectedRPPIndex] || rppDatabase[0];
+            if (!current) return;
 
             document.getElementById('input-penulis').value = current.penulis;
             document.getElementById('input-sekolah').value = current.sekolah;
@@ -923,9 +903,10 @@
             document.getElementById('input-alokasi').value = current.alokasi;
             document.getElementById('input-materi-utama').value = current.materiUtama;
             document.getElementById('input-model').value = current.model;
-            onModelChange();
             document.getElementById('input-cp').value = current.cp;
             document.getElementById('input-tujuan-suffix').value = current.tujuanSuffix;
+
+            onModelChange();
 
             const mediaContainer = document.getElementById('dynamic-media-container');
             mediaContainer.innerHTML = "";
@@ -945,7 +926,7 @@
             }
         }
 
-        // SIMPAN DRAFT/RPP BARU ATUK PERBARUI RPP TERSEDIA
+        // SIMPAN RPP BARU / PERBAIKAN RPP
         function saveRPP(e) {
             e.preventDefault();
 
@@ -957,8 +938,8 @@
             });
 
             const today = new Date().toISOString().split('T')[0];
-            const rppData = {
-                id: editingRPPId ? editingRPPId : Date.now(),
+            const newRPP = {
+                id: Date.now(),
                 tanggal: today,
                 penulis: document.getElementById('input-penulis').value,
                 sekolah: document.getElementById('input-sekolah').value,
@@ -979,74 +960,33 @@
                 }
             };
 
-            if (editingRPPId) {
-                const idx = rppDatabase.findIndex(item => item.id === editingRPPId);
-                if (idx !== -1) {
-                    rppDatabase[idx] = rppData;
-                    selectedRPPIndex = idx;
-                }
-                alert("RPP Berhasil Diperbarui!");
-            } else {
-                rppDatabase.unshift(rppData);
-                selectedRPPIndex = 0;
-                alert("RPP Berhasil Disimpan & Diterbitkan!");
-            }
-
-            editingRPPId = null;
+            rppDatabase.unshift(newRPP);
+            selectedRPPIndex = 0;
+            alert("RPP Berhasil Disimpan & Diterbitkan!");
             switchTab('rpp-view');
         }
 
-        // RENDER HISTORI RPP & HAPUS/EDIT PERBARUI
+        // RENDER HISTORI TABEL RPP
         function renderRPPHistoryTable() {
             const tbody = document.getElementById('rpp-history-table-body');
+            if(!tbody) return;
             tbody.innerHTML = "";
-
-            if(rppDatabase.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400 italic">Belum ada RPP tersimpan. Silakan buat RPP baru.</td></tr>`;
-                return;
-            }
 
             rppDatabase.forEach((item, index) => {
                 const tr = document.createElement('tr');
-                tr.className = index === selectedRPPIndex ? "bg-blue-50/80 font-semibold" : "hover:bg-slate-50";
+                tr.className = index === selectedRPPIndex ? "bg-blue-50 font-semibold" : "hover:bg-slate-50";
                 tr.innerHTML = `
-                    <td class="p-4 text-slate-600 whitespace-nowrap">${item.tanggal}</td>
+                    <td class="p-4 text-slate-600">${item.tanggal}</td>
                     <td class="p-4 text-slate-800 font-bold">${item.mapel}</td>
                     <td class="p-4 text-slate-700">${item.materiUtama}</td>
-                    <td class="p-4 text-center whitespace-nowrap">
-                        <div class="flex items-center justify-center space-x-1.5">
-                            <button onclick="selectRPP(${index})" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded text-xs transition shadow flex items-center gap-1" title="Tampilkan">
-                                <i class="fa-solid fa-eye"></i> Tampil
-                            </button>
-                            <button onclick="requestAuth('rpp-editor', ${index})" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-2.5 py-1.5 rounded text-xs transition shadow flex items-center gap-1" title="Edit RPP">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit
-                            </button>
-                            <button onclick="deleteRPP(${index})" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2.5 py-1.5 rounded text-xs transition shadow flex items-center gap-1" title="Hapus RPP">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
+                    <td class="p-4">
+                        <button onclick="selectRPP(${index})" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded text-xs transition shadow">
+                            <i class="fa-solid fa-eye mr-1"></i> Tampilkan & Download
+                        </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
-
-        function deleteRPP(index) {
-            const pass = prompt("Masukkan Password Khusus Guru untuk menghapus RPP ini:");
-            if (pass === null) return;
-
-            if (pass.trim() === TEACHER_PASSWORD) {
-                if(confirm("Apakah Anda yakin ingin menghapus RPP ini?")) {
-                    rppDatabase.splice(index, 1);
-                    if (selectedRPPIndex >= rppDatabase.length) {
-                        selectedRPPIndex = Math.max(0, rppDatabase.length - 1);
-                    }
-                    renderRPPHistoryTable();
-                    renderSelectedRPP();
-                }
-            } else {
-                alert("Password Salah! Akses ditolak.");
-            }
         }
 
         function selectRPP(index) {
@@ -1056,26 +996,10 @@
         }
 
         function renderSelectedRPP() {
-            const current = rppDatabase[selectedRPPIndex];
-            if (!current) {
-                document.getElementById('display-penulis').innerText = "-";
-                document.getElementById('display-sekolah').innerText = "-";
-                document.getElementById('display-mapel').innerText = "-";
-                document.getElementById('display-alokasi').innerText = "-";
-                document.getElementById('display-materi-utama').innerText = "-";
-                document.getElementById('display-model').innerText = "-";
-                document.getElementById('display-model-banner').innerText = "-";
-                document.getElementById('tp-model-text').innerText = "-";
-                document.getElementById('display-cp').innerText = "Belum ada RPP yang dipilih.";
-                document.getElementById('display-tujuan').innerText = "-";
-                document.getElementById('display-media-list').innerHTML = "<li>-</li>";
-                document.getElementById('display-steps-container').innerHTML = "";
-                document.getElementById('display-ttd-penulis').innerText = "( .................................................... )";
-                return;
-            }
+            const current = rppDatabase[selectedRPPIndex] || rppDatabase[0];
+            if (!current) return;
 
             document.getElementById('display-penulis').innerText = current.penulis;
-            document.getElementById('display-ttd-penulis').innerText = `( ${current.penulis} )`;
             document.getElementById('display-sekolah').innerText = current.sekolah;
             document.getElementById('display-mapel').innerText = current.mapel;
             document.getElementById('display-alokasi').innerText = current.alokasi;
@@ -1094,9 +1018,9 @@
                     const li = document.createElement('li');
                     li.className = "flex items-center space-x-2";
                     if (m.startsWith('http://') || m.startsWith('https://')) {
-                        li.innerHTML = `<i class="fa-solid fa-link text-blue-600 flex-shrink-0"></i> <a href="${m}" target="_blank" class="text-blue-600 hover:underline font-semibold break-all">${m}</a>`;
+                        li.innerHTML = `<i class="fa-solid fa-link text-blue-600"></i> <a href="${m}" target="_blank" class="text-blue-600 hover:underline font-semibold line-clamp-1">${m}</a>`;
                     } else {
-                        li.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 flex-shrink-0"></i> <span>${m}</span>`;
+                        li.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> <span>${m}</span>`;
                     }
                     mediaListElem.appendChild(li);
                 });
@@ -1104,15 +1028,15 @@
                 mediaListElem.innerHTML = "<li class='text-slate-400 italic'>Belum ada media yang ditambahkan.</li>";
             }
 
-            // Render Steps
+            // Render Steps RPP
             const stepsContainer = document.getElementById('display-steps-container');
             stepsContainer.innerHTML = `
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg"><strong class="text-blue-900 block mb-1">1. Pendahuluan (Mindful & Joyful)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step1 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg"><strong class="text-blue-900 block mb-1">2. Kegiatan Inti - Sintaks 1 (Orientasi Masalah)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step2 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg"><strong class="text-blue-900 block mb-1">3. Kegiatan Inti - Sintaks 2 (Pengorganisasian)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step3 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg"><strong class="text-blue-900 block mb-1">4. Kegiatan Inti - Sintaks 3 (Penyelidikan / Monitoring)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step4 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg"><strong class="text-blue-900 block mb-1">5. Kegiatan Inti - Sintaks 4 & 5 (Penyajian Hasil & Evaluasi)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step5 : ''}</p></div>
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg"><strong class="text-blue-900 block mb-1">6. Penutup (Refleksi & Feedback Joyful)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step6 : ''}</p></div>
+                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">1. Pendahuluan (Mindful)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step1 : ''}</p></div>
+                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">2. Kegiatan Inti - Sintaks 1</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step2 : ''}</p></div>
+                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">3. Kegiatan Inti - Sintaks 2</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step3 : ''}</p></div>
+                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">4. Kegiatan Inti - Sintaks 3</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step4 : ''}</p></div>
+                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">5. Kegiatan Inti - Sintaks 4 & 5</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step5 : ''}</p></div>
+                <div class="p-3 bg-slate-50 border rounded-lg"><strong class="text-blue-900 block mb-1">6. Penutup (Joyful)</strong><p class="whitespace-pre-line text-slate-700">${current.steps ? current.steps.step6 : ''}</p></div>
             `;
         }
 
@@ -1477,6 +1401,7 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
 
         function renderLKPDList() {
             const container = document.getElementById('lkpd-list-container');
+            if(!container) return;
             container.innerHTML = "";
 
             lkpdDatabase.forEach((lkpd, idx) => {
@@ -1503,8 +1428,11 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
             const lkpd = lkpdDatabase[activeLKPDIndex];
             if (!lkpd) return;
 
-            document.getElementById('lkpd-active-title').innerText = lkpd.judul;
+            const titleElem = document.getElementById('lkpd-active-title');
+            if(titleElem) titleElem.innerText = lkpd.judul;
+            
             const container = document.getElementById('lkpd-content-area');
+            if(!container) return;
             container.innerHTML = "";
 
             // ZONE 1: MINDFUL LEARNING
@@ -1785,9 +1713,7 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
         function onModelChange() {
             const modelVal = document.getElementById('input-model').value;
             const prefixElem = document.getElementById('prefix-model-name');
-            if (prefixElem) {
-                prefixElem.innerText = modelVal;
-            }
+            if(prefixElem) prefixElem.innerText = modelVal;
         }
 
         // INITIALIZATION

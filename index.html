@@ -596,7 +596,7 @@
 
     <!-- JAVASCRIPT SYSTEM -->
     <script>
-        // DATA DEFAULT MASTER LKPD (3 ZONE)
+        // DATA DEFAULT MASTER LKPD (3 ZONE) DENGAN KUNCI JAWABAN & PENJELASAN
         let lkpdDatabase = [
             {
                 id: 1,
@@ -624,7 +624,8 @@
                                 "Tambahkan kapasitas RAM komputer",
                                 "Bersihkan kipas pendingin processor (Heatsink)",
                                 "Install ulang aplikasi kalkulator"
-                            ]
+                            ],
+                            kunci_jawaban_opsi: [0, 1, 2] // Index jawaban benar
                         },
                         {
                             tipe: "pengurutan_langkah",
@@ -653,6 +654,8 @@
                                 "C. Aplikasi Microsoft Word",
                                 "D. Tetikus (Mouse) Wireless"
                             ],
+                            jawaban_benar: 0, // Index A
+                            penjelasan: "Gambar tidak muncul di layar biasanya disebabkan masalah fisik pada transmisi video (Kabel VGA/HDMI) atau kegagalan POST memori utama (RAM) pada motherboard.",
                             butuh_alasan_manual: true
                         }
                     ],
@@ -773,6 +776,8 @@
 
             const qTitle = qData ? qData.pertanyaan : "";
             const qPilihan = qData && qData.pilihan ? qData.pilihan.join("\n") : "";
+            const qJawaban = qData && qData.jawaban_benar !== undefined ? qData.jawaban_benar : 0;
+            const qPenjelasan = qData && qData.penjelasan ? qData.penjelasan : "";
             const qButuhAlasan = qData ? qData.butuh_alasan_manual : true;
 
             div.innerHTML = `
@@ -783,11 +788,19 @@
                     <label class="block text-xs font-bold text-slate-700 mb-1">Pertanyaan Uji Pemahaman / Kuis Reflektif</label>
                     <input type="text" class="z3-pertanyaan-input w-full p-2 border rounded text-xs" value="${qTitle}" placeholder="Tuliskan pertanyaan tantangan..." required>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Pilihan Ganda A, B, C, D (Satu pilihan per baris)</label>
-                    <textarea class="z3-pilihan-input w-full p-2 border rounded text-xs" rows="3" placeholder="A. Opsi A&#10;B. Opsi B&#10;C. Opsi C&#10;D. Opsi D">${qPilihan}</textarea>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Pilihan Ganda A, B, C, D (Satu per baris)</label>
+                        <textarea class="z3-pilihan-input w-full p-2 border rounded text-xs" rows="3" placeholder="A. Opsi A&#10;B. Opsi B&#10;C. Opsi C&#10;D. Opsi D">${qPilihan}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Index Jawaban Benar (0 = A, 1 = B, dst)</label>
+                        <input type="number" min="0" max="3" class="z3-jawaban-input w-full p-2 border rounded text-xs mb-2" value="${qJawaban}">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Penjelasan Kunci Jawaban</label>
+                        <input type="text" class="z3-penjelasan-input w-full p-2 border rounded text-xs" value="${qPenjelasan}" placeholder="Alasan mengapa jawaban ini benar...">
+                    </div>
                 </div>
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2 pt-1">
                     <input type="checkbox" class="z3-alasan-check rounded text-emerald-600" ${qButuhAlasan ? 'checked' : ''}>
                     <label class="text-xs text-slate-700 font-semibold">Minta siswa menyertakan alasan manual</label>
                 </div>
@@ -845,6 +858,7 @@
 
                 if (tipe === 'pilihan_pemecahan') {
                     item.opsi_pilihan = div.querySelector('.z2-opsi-input').value.split('\n').filter(o => o.trim() !== "");
+                    item.kunci_jawaban_opsi = [0, 1, 2]; // Opsi default 3 pertama
                 } else if (tipe === 'pengurutan_langkah') {
                     item.langkah_acak = div.querySelector('.z2-langkah-input').value.split('\n').filter(l => l.trim() !== "");
                 } else {
@@ -858,8 +872,10 @@
             document.querySelectorAll('#zone3-questions-container > div').forEach(div => {
                 const pertanyaan = div.querySelector('.z3-pertanyaan-input').value;
                 const pilihan = div.querySelector('.z3-pilihan-input').value.split('\n').filter(p => p.trim() !== "");
+                const jawaban_benar = parseInt(div.querySelector('.z3-jawaban-input').value) || 0;
+                const penjelasan = div.querySelector('.z3-penjelasan-input').value || "";
                 const butuh_alasan_manual = div.querySelector('.z3-alasan-check').checked;
-                z3List.push({ pertanyaan, pilihan, butuh_alasan_manual });
+                z3List.push({ pertanyaan, pilihan, jawaban_benar, penjelasan, butuh_alasan_manual });
             });
 
             const emosiList = document.getElementById('manual-z3-emosi').value.split('\n').filter(e => e.trim() !== "");
@@ -899,6 +915,7 @@
 PENTING ATURAN KURIKULUM BARU:
 1. DILARANG MENGGUNAKAN KATA "BAYANGKAN" ATAU "RASAKAN" pada Zone 1 (Mindful Learning). Gunakan kata-kata kesadaran observasional seperti "amati", "fokuskan", "perhatikan", "sadari".
 2. Sertakan ringkasan "materi_singkat" pembelajaran pada Zone 1 untuk memberikan pemahaman awal bagi siswa.
+3. Pada Zone 3, berikan field "jawaban_benar" (angka index 0=A, 1=B, dst) dan "penjelasan" alasan kunci jawabannya.
 
 Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau markdown penjelasan agar bisa langsung diimpor otomatis oleh sistem:
 
@@ -921,7 +938,8 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
         "pertanyaan": "Pilihlah 3 langkah/solusi yang paling tepat untuk menangani masalah di atas!",
         "opsi_pilihan": [
           "Opsi 1", "Opsi 2", "Opsi 3", "Opsi 4", "Opsi 5"
-        ]
+        ],
+        "kunci_jawaban_opsi": [0, 1, 2]
       },
       {
         "tipe": "pengurutan_langkah",
@@ -942,6 +960,8 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
       {
         "pertanyaan": "Soal studi kasus singkat untuk menguji pemahaman inti...",
         "pilihan": ["A. Opsi A", "B. Opsi B", "C. Opsi C", "D. Opsi D"],
+        "jawaban_benar": 0,
+        "penjelasan": "Penjelasan mengapa opsi A adalah jawaban paling tepat...",
         "butuh_alasan_manual": true
       }
     ],
@@ -996,7 +1016,7 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
                         kegiatan: []
                     };
                     newLKPD.zone3_joyful = data.zone3_joyful || {
-                        soal_reflektif_list: [{ pertanyaan: "Soal evaluasi singkat.", pilihan: [] }],
+                        soal_reflektif_list: [{ pertanyaan: "Soal evaluasi singkat.", pilihan: [], jawaban_benar: 0, penjelasan: "" }],
                         refleksi_diri: { pilihan_emosi: ["Paham"], pesan_untuk_guru: "" }
                     };
                 }
@@ -1087,15 +1107,15 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
                 if (lkpd.zone2_meaningful.kegiatan) {
                     lkpd.zone2_meaningful.kegiatan.forEach((keg, kIdx) => {
                         if (keg.tipe === "pilihan_pemecahan") {
-                            const opsiHtml = (keg.opsi_pilihan || []).map((o) => `
-                                <label class="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-slate-200 hover:bg-amber-50 cursor-pointer text-xs transition-colors">
+                            const opsiHtml = (keg.opsi_pilihan || []).map((o, oIdx) => `
+                                <label class="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-slate-200 hover:bg-amber-50 cursor-pointer text-xs transition-colors z2-opt-label" data-optindex="${oIdx}">
                                     <input type="checkbox" name="z2_keg_${kIdx}" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500">
                                     <span class="text-slate-800">${o}</span>
                                 </label>
                             `).join('');
 
                             kegiatanHtml += `
-                                <div class="space-y-2">
+                                <div class="space-y-2" id="z2-qbox-${kIdx}">
                                     <h4 class="font-bold text-xs text-slate-800">${kIdx + 1}. ${keg.pertanyaan}</h4>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${opsiHtml}</div>
                                 </div>
@@ -1153,18 +1173,22 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
                 listReflektif.forEach((soalItem, qIdx) => {
                     let pilihanHtml = "";
                     if (soalItem.pilihan) {
-                        pilihanHtml = soalItem.pilihan.map(p => `
-                            <label class="flex items-center space-x-2 p-2 bg-white rounded-lg border border-slate-200 hover:bg-emerald-50 cursor-pointer text-xs transition-colors">
-                                <input type="radio" name="z3_soal_${qIdx}" class="text-emerald-600 focus:ring-emerald-500">
+                        pilihanHtml = soalItem.pilihan.map((p, pIdx) => `
+                            <label class="flex items-center space-x-2 p-2.5 bg-white rounded-lg border border-slate-200 hover:bg-emerald-50 cursor-pointer text-xs transition-colors z3-opt-label" data-optindex="${pIdx}">
+                                <input type="radio" name="z3_soal_${qIdx}" value="${pIdx}" class="text-emerald-600 focus:ring-emerald-500">
                                 <span class="text-slate-800">${p}</span>
                             </label>
                         `).join('');
                     }
 
                     kuisListHtml += `
-                        <div class="bg-white p-4 rounded-xl border border-emerald-200 space-y-3">
+                        <div class="bg-white p-4 rounded-xl border border-emerald-200 space-y-3" id="z3-qbox-${qIdx}">
                             <h4 class="font-bold text-xs text-slate-800">${qIdx + 1}. ${soalItem.pertanyaan}</h4>
                             <div class="space-y-1.5">${pilihanHtml}</div>
+                            
+                            <!-- TEMPAT KUNCI JAWABAN & PENJELASAN (AKAN DIRENDER DENGAN JS) -->
+                            <div class="z3-explanation-box hidden pt-2"></div>
+
                             ${soalItem.butuh_alasan_manual ? `
                                 <textarea rows="2" placeholder="Tuliskan alasan singkat jawaban Anda..." class="w-full p-2 border rounded-lg text-xs bg-slate-50 mt-2"></textarea>
                             ` : ''}
@@ -1203,73 +1227,117 @@ Berikan balasan HANYA dalam format JSON baku berikut tanpa teks pendahuluan atau
             }
         }
 
-        // FUNGSI SUBMIT DENGAN PEMERIKSAAN WARNA HIJAU/MERAH, PDF DOWNLOAD, & NAVIGASI ADMINISTRASI
+        // FUNGSI SUBMIT DENGAN PEMERIKSAAN WARNA HIJAU/MERAH, KUNCI JAWABAN & PENJELASAN
         function submitLKPD() {
             const lkpd = lkpdDatabase[activeLKPDIndex];
             if (!lkpd) return;
 
-            let totalSoal = 0;
-            let benar = 0;
+            let totalPoin = 0;
+            let poinDiperoleh = 0;
 
             // 1. EVALUASI ZONE 2: CHECKBOX (Pilihan Pemecahan)
             if (lkpd.zone2_meaningful && lkpd.zone2_meaningful.kegiatan) {
                 lkpd.zone2_meaningful.kegiatan.forEach((keg, kIdx) => {
                     if (keg.tipe === "pilihan_pemecahan") {
-                        const checkboxes = document.querySelectorAll(`input[name="z2_keg_${kIdx}"]`);
-                        checkboxes.forEach((cb) => {
-                            const label = cb.closest('label');
-                            totalSoal++;
-                            
-                            const isCorrect = label.innerText.includes("Periksa koneksi") || label.innerText.includes("Periksa kabel") || label.innerText.includes("Periksa driver");
+                        const kunciOpsi = keg.kunci_jawaban_opsi || [0, 1, 2];
+                        const labels = document.querySelectorAll(`#z2-qbox-${kIdx} .z2-opt-label`);
+
+                        labels.forEach((label) => {
+                            const optIndex = parseInt(label.dataset.optindex);
+                            const cb = label.querySelector('input[type="checkbox"]');
+                            const isCorrectOpt = kunciOpsi.includes(optIndex);
+
+                            totalPoin++;
 
                             if (cb.checked) {
-                                if (isCorrect) {
-                                    label.classList.add('bg-green-100', 'border-green-500', 'text-green-800', 'font-bold');
-                                    label.classList.remove('bg-white', 'hover:bg-amber-50');
-                                    benar++;
+                                if (isCorrectOpt) {
+                                    // BENAR -> HIJAU
+                                    label.classList.className = "";
+                                    label.className = "flex items-start space-x-2.5 p-2.5 bg-emerald-100 border-2 border-emerald-500 text-emerald-900 font-bold rounded-lg text-xs";
+                                    poinDiperoleh++;
                                 } else {
-                                    label.classList.add('bg-red-100', 'border-red-500', 'text-red-800', 'font-bold');
-                                    label.classList.remove('bg-white', 'hover:bg-amber-50');
+                                    // SALAH -> MERAH
+                                    label.classList.className = "";
+                                    label.className = "flex items-start space-x-2.5 p-2.5 bg-rose-100 border-2 border-rose-500 text-rose-900 font-bold rounded-lg text-xs";
                                 }
-                            } else if (isCorrect) {
-                                label.classList.add('border-green-400', 'bg-green-50');
+                            } else if (isCorrectOpt) {
+                                // TAMPILKAN KUNCI JAWABAN BENAR YANG TERLEWATKAN
+                                label.classList.className = "";
+                                label.className = "flex items-start space-x-2.5 p-2.5 bg-emerald-50 border-2 border-dashed border-emerald-400 text-emerald-800 rounded-lg text-xs";
                             }
                         });
                     }
                 });
             }
 
-            // 2. EVALUASI ZONE 3: RADIO BUTTON
+            // 2. EVALUASI ZONE 3: PILIHAN GANDA (RADIO BUTTON)
             const listReflektif = lkpd.zone3_joyful ? (lkpd.zone3_joyful.soal_reflektif_list || (lkpd.zone3_joyful.soal_reflektif ? [lkpd.zone3_joyful.soal_reflektif] : [])) : [];
-            listReflektif.forEach((_, qIdx) => {
-                const radios = document.querySelectorAll(`input[name="z3_soal_${qIdx}"]`);
-                radios.forEach((radio) => {
-                    const label = radio.closest('label');
-                    totalSoal++;
-                    const isCorrect = label.innerText.startsWith("A.");
+            
+            listReflektif.forEach((soalItem, qIdx) => {
+                totalPoin++;
+                const qBox = document.getElementById(`z3-qbox-${qIdx}`);
+                const labels = qBox.querySelectorAll('.z3-opt-label');
+                const expBox = qBox.querySelector('.z3-explanation-box');
+                const selectedRadio = qBox.querySelector(`input[name="z3_soal_${qIdx}"]:checked`);
+                
+                const idxJawabanBenar = soalItem.jawaban_benar !== undefined ? soalItem.jawaban_benar : 0;
+                const teksJawabanBenar = soalItem.pilihan && soalItem.pilihan[idxJawabanBenar] ? soalItem.pilihan[idxJawabanBenar] : "Jawaban Benar";
+
+                let isUserCorrect = false;
+
+                labels.forEach((label) => {
+                    const optIndex = parseInt(label.dataset.optindex);
+                    const radio = label.querySelector('input[type="radio"]');
 
                     if (radio.checked) {
-                        if (isCorrect) {
-                            label.classList.add('bg-green-100', 'border-green-500', 'text-green-800', 'font-bold');
-                            label.classList.remove('bg-white', 'hover:bg-emerald-50');
-                            benar++;
+                        if (optIndex === idxJawabanBenar) {
+                            // JAWABAN BENAR -> HIJAU
+                            label.className = "flex items-center space-x-2 p-2.5 bg-emerald-100 border-2 border-emerald-500 text-emerald-900 font-bold rounded-lg text-xs";
+                            isUserCorrect = true;
+                            poinDiperoleh++;
                         } else {
-                            label.classList.add('bg-red-100', 'border-red-500', 'text-red-800', 'font-bold');
-                            label.classList.remove('bg-white', 'hover:bg-emerald-50');
+                            // JAWABAN SALAH -> MERAH
+                            label.className = "flex items-center space-x-2 p-2.5 bg-rose-100 border-2 border-rose-500 text-rose-900 font-bold rounded-lg text-xs";
                         }
-                    } else if (isCorrect) {
-                        label.classList.add('border-green-400', 'bg-green-50');
+                    } else if (optIndex === idxJawabanBenar) {
+                        // TAMPILKAN PILIHAN YANG SEHARUSNYA BENAR
+                        label.className = "flex items-center space-x-2 p-2.5 bg-emerald-50 border-2 border-dashed border-emerald-400 text-emerald-800 rounded-lg text-xs font-semibold";
                     }
                 });
+
+                // TAMPILKAN KUNCI JAWABAN & PENJELASAN (KHUSUSNYA JIKA JAWABAN SALAH ATAU KOSONG)
+                if (expBox) {
+                    expBox.classList.remove('hidden');
+                    if (isUserCorrect) {
+                        expBox.innerHTML = `
+                            <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-900">
+                                <strong class="font-bold flex items-center text-emerald-700">
+                                    <i class="fa-solid fa-circle-check mr-1.5 text-emerald-600"></i> Jawaban Anda Tepat!
+                                </strong>
+                                <p class="mt-1">${soalItem.penjelasan || "Pemahaman Anda pada konsep ini sudah sangat baik."}</p>
+                            </div>
+                        `;
+                    } else {
+                        expBox.innerHTML = `
+                            <div class="p-3 bg-amber-50 border border-amber-300 rounded-lg text-xs text-amber-950 space-y-1">
+                                <strong class="font-bold flex items-center text-amber-800">
+                                    <i class="fa-solid fa-circle-xmark mr-1.5 text-rose-600"></i> Kunci Jawaban Benar: <span class="ml-1 text-emerald-700 underline">${teksJawabanBenar}</span>
+                                </strong>
+                                <p class="text-slate-700 leading-relaxed"><strong class="text-amber-900">Penjelasan:</strong> ${soalItem.penjelasan || "Perhatikan kembali pembahasan materi pada Zone 1 untuk memahami konsep ini."}</p>
+                            </div>
+                        `;
+                    }
+                }
             });
 
-            alert(`Jawaban Anda telah diperiksa secara otomatis!\nJumlah Pilihan Tepat: ${benar} / ${totalSoal}\n\nSistem akan otomatis mengunduh PDF pengerjaan Anda dan mengarahkan ke halaman Administrasi.`);
+            alert(`Pengerjaan LKPD Telah Diperiksa!\n\nHasil Uji Pemahaman: ${poinDiperoleh} / ${totalPoin} Poin Tepat.\n\nSistem telah menyoroti jawaban Benar (Hijau), Salah (Merah), serta menampilkan Kunci Jawaban & Penjelasan di bawah soal.`);
 
-            window.print();
-
+            // Opsi cetak PDF / Navigasi
             setTimeout(() => {
-                switchTab('administrasi');
-            }, 1000);
+                if(confirm("Apakah Anda ingin mencetak / menyimpan hasil pengerjaan LKPD ini ke PDF sekarang?")) {
+                    window.print();
+                }
+            }, 500);
         }
 
         // DEFAULT STEP STEPS FOR MODUL AJAR

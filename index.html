@@ -49,7 +49,7 @@
                                 <i class="fa-solid fa-file-pdf mr-2 text-blue-600"></i> Modul Ajar Siap Download
                             </a>
                             <a href="#" onclick="requestAuth('modul-editor')" class="block px-4 py-2 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                <i class="fa-solid fa-[#2563eb] fa-pen-to-square mr-2 text-blue-600"></i> Mulai Menyusun (Guru)
+                                <i class="fa-solid fa-pen-to-square mr-2 text-blue-600"></i> Mulai Menyusun (Guru)
                             </a>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
 
                 <!-- Informasi Penulis & Sekolah -->
                 <div class="bg-blue-50 px-6 py-3 border-b border-blue-100 flex flex-col sm:flex-row justify-between text-xs sm:text-sm text-blue-900 font-semibold">
-                    <div><i class="fa-solid fa-user-tie mr-1"></i> Penulis / Penyusun: <span id="display-penulis" class="font-bold">Ayu Yulandari, S.Pd.</span></div>
+                    <div><i class="fa-solid fa-user-tie mr-1"></i> Penulis / Penyusun: <span id="display-penulis" class="font-bold">Ni Made Ayu Ulandari, S.Pd</span></div>
                     <div><i class="fa-solid fa-school mr-1"></i> Satuan Pendidikan: <span id="display-sekolah" class="font-bold">SMP Negeri Informatika</span></div>
                 </div>
 
@@ -237,14 +237,14 @@
                     </div>
                 </div>
 
-                <!-- Tanda Tangan Footer -->
+                <!-- Tanda Tangan Footer (Dikosongkan) -->
                 <div class="p-8 border-t border-slate-200 bg-slate-50 flex justify-end">
                     <div class="text-center w-64 space-y-12">
                         <div>
                             <p class="text-xs text-slate-500">Guru Mata Pelajaran,</p>
-                            <div class="h-12"></div>
-                            <p id="display-ttd-nama" class="font-bold text-slate-800 underline">Ayu Yulandari, S.Pd.</p>
-                            <p class="text-xs text-slate-500">NIP. 19920815 202401 2 001</p>
+                            <div class="h-16"></div> <!-- Ruang tanda tangan manual -->
+                            <p class="font-bold text-slate-800 underline">( .................................................... )</p>
+                            <p class="text-xs text-slate-500 mt-1">NIP. ....................................................</p>
                         </div>
                     </div>
                 </div>
@@ -269,7 +269,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Penulis / Guru</label>
-                            <input type="text" id="input-penulis" value="Ayu Yulandari, S.Pd." class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" required>
+                            <input type="text" id="input-penulis" value="Ni Made Ayu Ulandari, S.Pd" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" required>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Satuan Pendidikan</label>
@@ -380,7 +380,7 @@
 
                         <!-- Editable Step 5 -->
                         <div class="bg-white p-3 rounded border border-slate-200 space-y-1">
-                            <label class="block text-xs font-bold text-blue-800">5. Kegiatan Inti - Sintaks 4 & 5 (Penyajian Hasil & Evaluasi)</label>
+                            <label class="block text-xs font-bold text-blue-800">5. Kegiatan Inti - Sintaks 4 & 5 (Penyajikan Hasil & Evaluasi)</label>
                             <textarea id="edit-step-5" rows="2" class="w-full p-2 border rounded text-xs"></textarea>
                         </div>
 
@@ -628,7 +628,6 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // TARGET TAB SETELAH AUTH PASSWORD SAKTI
         let targetTabAfterAuth = 'modul-editor';
         const PASSWORD_SANGAT_RAHASIA = "Ayuulan1234#";
 
@@ -731,7 +730,6 @@
 
             // Render ke Tampilan Utama
             document.getElementById('display-penulis').innerText = penulis;
-            document.getElementById('display-ttd-nama').innerText = penulis;
             document.getElementById('display-sekolah').innerText = sekolah;
             document.getElementById('display-mapel').innerText = mapel;
             document.getElementById('display-alokasi').innerText = alokasi;
